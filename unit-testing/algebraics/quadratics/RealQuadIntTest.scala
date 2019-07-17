@@ -466,12 +466,114 @@ class RealQuadIntTest {
 
   @Test def testAbs(): Unit = {
     println("abs")
-    fail("Haven't written test yet")
+    var testRealQuadInt = new RealQuadInt(1, 1, ringZ2)
+    var expected = 1.0 + Math.sqrt(2)
+    var actual = testRealQuadInt.abs
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testRealQuadInt = new RealQuadInt(1, -1, ringZ2)
+    expected = Math.abs(1.0 - Math.sqrt(2))
+    actual = testRealQuadInt.abs
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testRealQuadInt = new RealQuadInt(-3, 1, ringOQ13, 2)
+    expected = -1.5 + Math.sqrt(13)/2
+    actual = testRealQuadInt.abs
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testRealQuadInt = new RealQuadInt(-5, 2, ringRandom)
+    expected = Math.abs(-5.0 + 2 * Math.sqrt(ringRandom.radicand))
+    actual = testRealQuadInt.abs
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
   }
 
   @Test def testAngle(): Unit = {
     println("angle")
-    fail("Haven't written test yet")
+    val goldenRatio = new RealQuadInt(1, 1, ringZPhi, 2)
+    var actual = goldenRatio.angle
+    assertEquals(0.0, actual, QuadIntTest.TEST_DELTA)
+    val negNum = new RealQuadInt(-8, -7, ringRandom)
+    actual = negNum.angle
+    assertEquals(Math.PI, actual, QuadIntTest.TEST_DELTA)
+  }
+
+  @Test def testGetRealPartNumeric(): Unit = {
+    println("getRealPartNumeric")
+    var testRealQuadInt = new RealQuadInt(1, 1, ringZ2)
+    var expected = 1.0 + Math.sqrt(2)
+    var actual = testRealQuadInt.getRealPartNumeric
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testRealQuadInt = new RealQuadInt(1, -1, ringZ2)
+    expected = 1.0 - Math.sqrt(2)
+    actual = testRealQuadInt.getRealPartNumeric
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testRealQuadInt = new RealQuadInt(-3, 1, ringOQ13, 2)
+    expected = -1.5 + Math.sqrt(13)/2
+    actual = testRealQuadInt.getRealPartNumeric
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testRealQuadInt = new RealQuadInt(-5, 2, ringRandom)
+    expected = -5.0 + 2 * Math.sqrt(ringRandom.radicand)
+    actual = testRealQuadInt.getRealPartNumeric
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+  }
+
+  @Test def testGetImagPartNumeric(): Unit = {
+    println("getImagPartNumeric")
+    var testRealQuadInt = new RealQuadInt(1, 1, ringZ2)
+    val expected = 0.0
+    var actual = testRealQuadInt.getImagPartNumeric
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testRealQuadInt = new RealQuadInt(1, -1, ringZ2)
+    actual = testRealQuadInt.getImagPartNumeric
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testRealQuadInt = new RealQuadInt(-3, 1, ringOQ13, 2)
+    actual = testRealQuadInt.getImagPartNumeric
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testRealQuadInt = new RealQuadInt(-5, 2, ringRandom)
+    actual = testRealQuadInt.getImagPartNumeric
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+  }
+
+  @Test def testCompare(): Unit = {
+    println("compare")
+    val ring = new RealQuadRing(10)
+    val negSeven = new RealQuadInt(-7, 0, ring)
+    val numNeg136plus44Sqrt10 = new RealQuadInt(-136, 44, ring)
+    val num117minus36Sqrt10 = new RealQuadInt(117, -36, ring)
+    val numSqrt10 = new RealQuadInt(0, 1, ring)
+    var assertionMessage = negSeven.toString + " should be found to be less than " + numNeg136plus44Sqrt10.toString
+    assertTrue(assertionMessage, negSeven < numNeg136plus44Sqrt10)
+    assertionMessage = numNeg136plus44Sqrt10.toString + " should be found to be less than " + num117minus36Sqrt10.toString
+    assertTrue(assertionMessage, numNeg136plus44Sqrt10 < num117minus36Sqrt10)
+    assertionMessage = num117minus36Sqrt10.toString + " should be found to be less than " + numSqrt10.toString
+    assertTrue(assertionMessage, num117minus36Sqrt10 < numSqrt10)
+    var sameNum = new RealQuadInt(-7, 0, ring)
+    var comparison = sameNum.compare(negSeven)
+    assertEquals(0, comparison)
+    sameNum = new RealQuadInt(-136, 44, ring)
+    comparison = sameNum.compare(numNeg136plus44Sqrt10)
+    assertEquals(0, comparison)
+    sameNum = new RealQuadInt(117, -36, ring)
+    comparison = sameNum.compare(num117minus36Sqrt10)
+    assertEquals(0, comparison)
+    sameNum = new RealQuadInt(0, 1, ring)
+    comparison = sameNum.compare(numSqrt10)
+    assertEquals(0, comparison)
+    assertionMessage = numSqrt10.toString + " should be found to be greater than " + num117minus36Sqrt10.toString
+    assertTrue(assertionMessage, numSqrt10 > num117minus36Sqrt10)
+    assertionMessage = num117minus36Sqrt10.toString + " should be found to be greater than " + numNeg136plus44Sqrt10.toString
+    assertTrue(assertionMessage, num117minus36Sqrt10 > numNeg136plus44Sqrt10)
+    assertionMessage = numNeg136plus44Sqrt10.toString + " should be found to be greater than " + negSeven.toString
+    assertTrue(assertionMessage, numNeg136plus44Sqrt10 > negSeven)
+  }
+
+  @Test def testCompareThroughCollectionSort(): Unit = {
+    val ring = new RealQuadRing(10)
+    val negSeven = new RealQuadInt(-7, 0, ring)
+    val numNeg136plus44Sqrt10 = new RealQuadInt(-136, 44, ring)
+    val num117minus36Sqrt10 = new RealQuadInt(117, -36, ring)
+    val numSqrt10 = new RealQuadInt(0, 1, ring)
+    val scrambledList = List(num117minus36Sqrt10, numSqrt10, negSeven, numNeg136plus44Sqrt10)
+    val expected = List(negSeven, numNeg136plus44Sqrt10, num117minus36Sqrt10, numSqrt10)
+    val actual = scrambledList.sorted
+    assertEquals(expected, actual)
   }
 
   @Test def testPlus(): Unit = {

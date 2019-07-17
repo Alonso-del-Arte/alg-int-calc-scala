@@ -21,6 +21,20 @@ class ImagQuadIntTest {
   }
   private val ringRandom = new ImagQuadRing(testDiscr)
 
+  @Test def testInferStep(): Unit = {
+    println("inferStep")
+    var startingPoint = new ImagQuadInt(0, 0, ringGaussian)
+    var endingPoint = new ImagQuadInt(7, 7, ringGaussian)
+    var expected = new ImagQuadInt(1, 1, ringGaussian)
+    var actual = ImagQuadInt.inferStep(startingPoint, endingPoint)
+    assertEquals(expected, actual)
+    startingPoint = new ImagQuadInt(-2, 0, ringZi2)
+    endingPoint = new ImagQuadInt(-11, 3, ringZi2)
+    expected = new ImagQuadInt(-3, 1, ringZi2)
+    actual = ImagQuadInt.inferStep(startingPoint, endingPoint)
+    assertEquals(expected, actual)
+  }
+
   @Test def testConstructor(): Unit = {
     try {
       val badQuadInt = new ImagQuadInt(3, 1, ringGaussian, 2)
@@ -553,15 +567,58 @@ class ImagQuadIntTest {
     var expected = Math.sqrt(2)
     var actual = testImagQuadInt.abs
     assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
-    testImagQuadInt = new ImagQuadInt(-1, 1, ringEisenstein)
+    testImagQuadInt = new ImagQuadInt(1, -1, ringEisenstein)
+    expected = 2.0
+    actual = testImagQuadInt.abs
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testImagQuadInt = new ImagQuadInt(-1, 1, ringEisenstein, 2)
     expected = 1.0
+    actual = testImagQuadInt.abs
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testImagQuadInt = new ImagQuadInt(-5, 2, ringRandom)
+    expected = Math.abs(Math.sqrt(25.0 - 4 * ringRandom.radicand))
     actual = testImagQuadInt.abs
     assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
   }
 
   @Test def testAngle(): Unit = {
     println("angle")
-    fail("Haven't written test yet")
+    val imagUnit = new ImagQuadInt(0, 1, ringGaussian)
+    var expected = Math.PI/2
+    var actual = imagUnit.angle
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    val omega = new ImagQuadInt(-1, 1, ringEisenstein, 2)
+    expected = 2 * Math.PI/3
+    actual = omega.angle
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    val negImagUnit = new ImagQuadInt(0, -1, ringGaussian)
+    expected = -Math.PI/2
+    actual = negImagUnit.angle
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+  }
+
+  @Test def testGetRealPartNumeric(): Unit = {
+    println("getRealPartNumeric")
+    var testQuadInt = new ImagQuadInt(7, 3, ringEisenstein, 2)
+    var expected = 3.5
+    var actual = testQuadInt.getRealPartNumeric
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testQuadInt = new ImagQuadInt(5, 8, ringRandom)
+    expected = 5.0
+    actual = testQuadInt.getRealPartNumeric
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+  }
+
+  @Test def testGetImagPartNumeric(): Unit = {
+    println("getImagPartNumeric")
+    var testQuadInt = new ImagQuadInt(7, 3, ringEisenstein, 2)
+    var expected = 3.0 * Math.sqrt(3) / 2.0
+    var actual = testQuadInt.getImagPartNumeric
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
+    testQuadInt = new ImagQuadInt(5, 8, ringRandom)
+    expected = 8.0 * ringRandom.getAbsNegRadSqrt
+    actual = testQuadInt.getImagPartNumeric
+    assertEquals(expected, actual, QuadIntTest.TEST_DELTA)
   }
 
   @Test def testPlus(): Unit = {

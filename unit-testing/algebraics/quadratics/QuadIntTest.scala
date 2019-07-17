@@ -53,6 +53,13 @@ class QuadIntTest {
     assertEquals(expected, actual)
   }
 
+  @Test def testPlusUnary(): Unit = {
+    val testAddend = new ImagQuadInt(-1, 1, ringEisenstein, 2)
+    val expected = new ImagQuadInt(13, 1, ringEisenstein, 2)
+    val actual = testAddend + 7
+    assertEquals(expected, actual)
+  }
+
   @Test def testPlusDegreeOverflow(): Unit = {
     println("Testing that plus throws exception when result is of degree 4")
     val testAddendA = new ImagQuadInt(-1, 1, ringEisenstein, 2)
@@ -69,6 +76,13 @@ class QuadIntTest {
     }
   }
 
+  @Test def testMinusUnary(): Unit = {
+    val testMinuend = new RealQuadInt(-1, 1, ringZ2)
+    val expected = new RealQuadInt(-8, 1, ringZ2)
+    val actual = testMinuend - 7
+    assertEquals(expected, actual)
+  }
+
   @Test def testTimesUnaryAsQuadratic(): Unit = {
     println("Testing that multiplying by a degree 1 algebraic integer presented as quadratic integer gives result in appropriate quadratic ring")
     val testMultiplicandA = new ImagQuadInt(5, -1, ringEisenstein, 2)
@@ -80,6 +94,13 @@ class QuadIntTest {
     // Commutative check
     assertionMessage = testMultiplicandB.toString + " times " + testMultiplicandA.toString + " should be " + expected.toString
     actual = testMultiplicandB * testMultiplicandA
+    assertEquals(expected, actual)
+  }
+
+  @Test def testTimesUnary(): Unit = {
+    val testMultiplicand = new ImagQuadInt(5, -1, ringEisenstein, 2)
+    val expected = new ImagQuadInt(5, -1, ringEisenstein)
+    val actual = testMultiplicand * 2
     assertEquals(expected, actual)
   }
 
@@ -161,6 +182,13 @@ class QuadIntTest {
     }
   }
 
+  @Test def testDivideByUnary(): Unit = {
+    val testDividend = new RealQuadInt(3, 7, ringZPhi)
+    val expected = new RealQuadInt(3, 7, ringZPhi, 2)
+    val actual = testDividend / 2
+    assertEquals(expected, actual)
+  }
+
   @Test def testDivideCrossDomain(): Unit = {
     println("Testing that divides can correctly go from real to imaginary domain and back when appropriate")
     val dividendRing = new ImagQuadRing(-15)
@@ -230,6 +258,27 @@ class QuadIntTest {
       case adoe: AlgebraicDegreeOverflowException => println("Trying to divide " + testDividend.toString + " by " + testDivisor.toString + " correctly caused AlgebraicDegreeOverflowException")
         println("\"" + adoe.getMessage + "\"")
       case e: Exception => val failMsg = e.getClass.getName + " is the wrong exception for trying to divide " + testDividend.toString + " by " + testDivisor.toString
+        fail(failMsg)
+    }
+  }
+
+  @Test def testDivideByZero(): Unit = {
+    println("Testing that division by zero triggers the correct exception")
+    val testDividend = new RealQuadInt(5, 8, ringZ2)
+    try {
+      val result = testDividend / 0
+      val failMsg = "Trying to divide " + testDividend.toString + " by 0 should have caused an exception, not given result " + result.toString
+      fail(failMsg)
+    } catch {
+      case nde: NotDivisibleException => val failMsg = "Since " + testDividend.toString + " divided by 0 is not an algebraic number, NotDivisibleException is inappropriate"
+        println(failMsg)
+        println("\"" + nde.getMessage + "\"")
+        fail(failMsg)
+      case iae: IllegalArgumentException => println("Trying to divide " + testDividend.toString + " by 0 correctly triggered IllegalArgumentException")
+        println("\"" + iae.getMessage + "\"")
+      case ae: ArithmeticException => println("ArithmeticException is adequate for trying to divide " + testDividend.toString + " by 0")
+        println("\"" + ae.getMessage + "\"")
+      case e: Exception => val failMsg = e.getClass.getName + " is not the right exception for trying to divide " + testDividend.toString + " by 0"
         fail(failMsg)
     }
   }
