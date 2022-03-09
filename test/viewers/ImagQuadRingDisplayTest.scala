@@ -1,7 +1,7 @@
 package viewers
 
 import algebraics.quadratics.ImagQuadRing
-
+// TODO: Switch over to JUnit 5
 import org.junit.Test
 import org.junit.Assert._
 
@@ -13,13 +13,20 @@ class ImagQuadRingDisplayTest {
     println("setPixelsPerUnitInterval")
     try {
       ird.setPixelsPerUnitInterval(RingDisplay.MINIMUM_PIXELS_PER_UNIT_INTERVAL - 1)
-      val failMsg = "Trying to set pixels per unit interval below " + RingDisplay.MINIMUM_PIXELS_PER_UNIT_INTERVAL.toString + " should have caused an exception"
-      fail(failMsg)
+      val msg = "Trying to set pixels per unit interval below " +
+        RingDisplay.MINIMUM_PIXELS_PER_UNIT_INTERVAL.toString +
+        " should have caused an exception"
+      fail(msg)
     } catch {
-      case iae: IllegalArgumentException => println("Trying to set pixels per unit interval below " + RingDisplay.MINIMUM_PIXELS_PER_UNIT_INTERVAL.toString + " correctly triggered IllegalArgumentException")
+      case iae: IllegalArgumentException =>
+        println("Trying to set pixels per unit interval below "
+          + RingDisplay.MINIMUM_PIXELS_PER_UNIT_INTERVAL.toString
+          + " correctly triggered IllegalArgumentException")
         println("\"" + iae.getMessage + "\"")
-      case e: Exception => val failMsg = e.getClass.getName + " is wrong exception to throw for trying to set pixels per unit interval below " + RingDisplay.MINIMUM_PIXELS_PER_UNIT_INTERVAL.toString
-        fail(failMsg)
+      case e: Exception => val msg = e.getClass.getName +
+        " is wrong exception to throw for trying to set pixels per unit interval below " +
+        RingDisplay.MINIMUM_PIXELS_PER_UNIT_INTERVAL.toString
+        fail(msg)
     }
   }
 

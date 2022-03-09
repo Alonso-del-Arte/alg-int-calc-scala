@@ -1,5 +1,5 @@
 package fractions
-
+// TODO: Switch over to JUnit 5
 import org.junit.Test
 import org.junit.Assert._
 
@@ -136,12 +136,16 @@ class FractionTest {
     val zero = new Fraction(0)
     try {
       val result = threeHalves / zero
-      val failMsg = "Trying to divide by zero should have caused an exception, not given result " + result.toString
-      fail(failMsg)
+      val msg = "Trying to divide by zero should have caused an exception, not given result " +
+        result.toString
+      fail(msg)
     } catch {
-      case iae: IllegalArgumentException => println("Trying to divide by zero correctly triggered IllegalArgumentException")
+      case iae: IllegalArgumentException =>
+        println("Trying to divide by zero correctly triggered IllegalArgumentException")
         println("\"" + iae.getMessage + "\"")
-      case ae: ArithmeticException => println("Trying to divide by zero correctly triggered ArithmeticException: " + ae.getMessage)
+      case ae: ArithmeticException =>
+        println("Trying to divide by zero correctly triggered ArithmeticException: " +
+          ae.getMessage)
       case e: Exception => fail(e.getMessage)
     }
   }
@@ -155,12 +159,15 @@ class FractionTest {
     try {
       val zero = new Fraction(0)
       val zeroRecip = zero.reciprocal
-      val failMessage = "Trying to take reciprocal of 0 should have caused an exception, not given result " + zeroRecip.toString
-      fail(failMessage)
+      val msg = "Trying to take reciprocal of 0 should have caused an exception, not given result " +
+        zeroRecip.toString
+      fail(msg)
     } catch {
-      case iae: IllegalArgumentException => println("Trying to take reciprocal of 0 correctly triggered IllegalArgumentException")
+      case iae: IllegalArgumentException =>
+        println("Trying to take reciprocal of 0 correctly triggered IllegalArgumentException")
         println("\"" + iae.getMessage + "\"")
-      case ae: ArithmeticException => println("Trying to take reciprocal of 0 correctly triggered ArithmeticException")
+      case ae: ArithmeticException =>
+        println("Trying to take reciprocal of 0 correctly triggered ArithmeticException")
         println("\"" + ae.getMessage + "\"")
       case e: Exception => fail(e.getMessage)
     }
@@ -187,6 +194,7 @@ class FractionTest {
     assertEquals(expected, actual, testDelta)
   }
 
+  // TODO: Simplify test
   @Test def testCompare(): Unit = {
     println("compare")
     val negThreeHalves = new Fraction(-3, 2)
@@ -195,49 +203,52 @@ class FractionTest {
     val approxPiSevenths = new Fraction(22, 7)
     val sevenHalves = new Fraction(7, 2)
     var comparison = negThreeHalves.compare(approxPiFiftieths)
-    var assertionMessage = negThreeHalves.toString + " should be found to be less than " + approxPiFiftieths.toString
-    assertTrue(assertionMessage, comparison < 0)
+    var msg = negThreeHalves.toString + " should be found to be less than " +
+      approxPiFiftieths.toString
+    assertTrue(msg, comparison < 0)
     comparison = approxPiFiftieths.compare(approxPi113ths)
-    assertionMessage = approxPiFiftieths.toString + " should be found to be less than " + approxPi113ths
-    assertTrue(assertionMessage, comparison < 0)
+    msg = approxPiFiftieths.toString +
+      " should be found to be less than " + approxPi113ths
+    assertTrue(msg, comparison < 0)
     comparison = approxPi113ths.compare(approxPiSevenths)
-    assertionMessage = approxPi113ths.toString + " should be found to be less than " + approxPiSevenths
-    assertTrue(assertionMessage, comparison < 0)
+    msg = approxPi113ths.toString +
+      " should be found to be less than " + approxPiSevenths
+    assertTrue(msg, comparison < 0)
     comparison = approxPiSevenths.compare(sevenHalves)
-    assertionMessage = approxPiSevenths.toString + " should be found to be less than " + sevenHalves.toString
-    assertTrue(assertionMessage, comparison < 0)
+    msg = approxPiSevenths.toString + " should be found to be less than " + sevenHalves.toString
+    assertTrue(msg, comparison < 0)
     var equalFraction = new Fraction(-3, 2)
     comparison = negThreeHalves.compare(equalFraction)
-    assertionMessage = negThreeHalves.toString + " should be found to be equal to " + equalFraction.toString
-    assertTrue(assertionMessage, comparison == 0)
+    msg = negThreeHalves.toString + " should be found to be equal to " + equalFraction.toString
+    assertTrue(msg, comparison == 0)
     equalFraction = new Fraction(157, 50)
     comparison = approxPiFiftieths.compare(equalFraction)
-    assertionMessage = approxPiFiftieths.toString + " should be found to be equal to " + equalFraction.toString
-    assertTrue(assertionMessage, comparison == 0)
+    msg = approxPiFiftieths.toString + " should be found to be equal to " + equalFraction.toString
+    assertTrue(msg, comparison == 0)
     equalFraction = new Fraction(355, 113)
     comparison = approxPi113ths.compare(equalFraction)
-    assertionMessage = approxPi113ths.toString + " should be found to be equal to " + equalFraction.toString
-    assertTrue(assertionMessage, comparison == 0)
+    msg = approxPi113ths.toString + " should be found to be equal to " + equalFraction.toString
+    assertTrue(msg, comparison == 0)
     equalFraction = new Fraction(22, 7)
     comparison = approxPiSevenths.compare(equalFraction)
-    assertionMessage = approxPiSevenths.toString + " should be found to be equal to " + equalFraction.toString
-    assertTrue(assertionMessage, comparison == 0)
+    msg = approxPiSevenths.toString + " should be found to be equal to " + equalFraction.toString
+    assertTrue(msg, comparison == 0)
     equalFraction = new Fraction(7, 2)
     comparison = sevenHalves.compare(equalFraction)
-    assertionMessage = sevenHalves.toString + " should be found to be equal to " + equalFraction.toString
-    assertTrue(assertionMessage, comparison == 0)
+    msg = sevenHalves.toString + " should be found to be equal to " + equalFraction.toString
+    assertTrue(msg, comparison == 0)
     comparison = approxPiFiftieths.compare(negThreeHalves)
-    assertionMessage = approxPiFiftieths.toString + " should be found to be more than " + negThreeHalves
-    assertTrue(assertionMessage, comparison > 0)
+    msg = approxPiFiftieths.toString + " should be found to be more than " + negThreeHalves
+    assertTrue(msg, comparison > 0)
     comparison = approxPi113ths.compare(approxPiFiftieths)
-    assertionMessage = approxPi113ths.toString + " should be found to be more than " + approxPiFiftieths
-    assertTrue(assertionMessage, comparison > 0)
+    msg = approxPi113ths.toString + " should be found to be more than " + approxPiFiftieths
+    assertTrue(msg, comparison > 0)
     comparison = approxPiSevenths.compare(approxPi113ths)
-    assertionMessage = approxPiSevenths.toString + " should be found to be more than " + approxPi113ths
-    assertTrue(assertionMessage, comparison > 0)
+    msg = approxPiSevenths.toString + " should be found to be more than " + approxPi113ths
+    assertTrue(msg, comparison > 0)
     comparison = sevenHalves.compare(approxPiSevenths)
-    assertionMessage = sevenHalves.toString + " should be found to be more than " + approxPiSevenths
-    assertTrue(assertionMessage, comparison > 0)
+    msg = sevenHalves.toString + " should be found to be more than " + approxPiSevenths
+    assertTrue(msg, comparison > 0)
   }
 
   @Test def testCompareThroughOperators(): Unit = {
