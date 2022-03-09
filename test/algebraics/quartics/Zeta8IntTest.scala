@@ -208,7 +208,7 @@ class Zeta8IntTest {
     fail("Haven't written test yet")
   }
 
-  @Test def testEquals() {
+  @Test def testEquals(): Unit = {
     println("equals")
     var sameNum = new Zeta8Int(0, 1, 0, 0)
     var diffNum = new Zeta8Int(1, 0, 0, 0)

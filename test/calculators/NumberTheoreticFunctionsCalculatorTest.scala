@@ -32,7 +32,7 @@ class NumberTheoreticFunctionsCalculatorTest {
   private val ringZPhi = new RealQuadRing(5)
   private val ringUnsupported = new IllDefQuadRing(1)
 
-  @Test def testPrimeFactors() {
+  @Test def testPrimeFactors(): Unit = {
     println("primeFactors")
     val expected = Vector[Int](-1, 2, 7)
     val actual = NumberTheoreticFunctionsCalculator.primeFactors(-14)
@@ -49,7 +49,7 @@ class NumberTheoreticFunctionsCalculatorTest {
     assertEquals(expected, actual)
   }
 
-  @Test def testIsPrime() {
+  @Test def testIsPrime(): Unit = {
     println("isPrime")
     var number = 7
     var assertionMessage = number.toString + " should be found to be prime"
@@ -74,18 +74,18 @@ class NumberTheoreticFunctionsCalculatorTest {
     // TODO: Write test for AlgInt
   }
 
-  @Test def testIsIrreducible() {
+  @Test def testIsIrreducible(): Unit = {
     println("isIrreducible")
     val ringZi5 = new ImagQuadRing(-5)
     var num = new ImagQuadInt(1, 1, ringZi5)
-    var assertionMessage = num.toString + " should be found to be irreducible"
-    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(num))
+    var msg = num.toString + " should be found to be irreducible"
+    assertTrue(msg, NumberTheoreticFunctionsCalculator.isIrreducible(num))
     num = new ImagQuadInt(1, 7, ringZi5)
-    assertionMessage = num.toString + " should not be found to be irreducible"
-    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(num))
+    msg = num.toString + " should not be found to be irreducible"
+    assertFalse(msg, NumberTheoreticFunctionsCalculator.isIrreducible(num))
   }
 
-  @Test def testIsDivisibleBy() {
+  @Test def testIsDivisibleBy(): Unit = {
     println("isDivisibleBy")
     val testDividend = new RealQuadInt(59, 0, ringZPhi)
     val testDivisor = new RealQuadInt(8, 1, ringZPhi)
@@ -95,38 +95,38 @@ class NumberTheoreticFunctionsCalculatorTest {
     assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(testDivisor, testDividend))
   }
 
-  @Test def testIsSquarefree() {
+  @Test def testIsSquarefree(): Unit = {
     println("isSquarefree")
-    var assertionMessage = "The number -1 should be found to be squarefree"
-    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isSquarefree(-1))
-    assertionMessage = "The number 0 should not be found to be squarefree"
-    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isSquarefree(0))
-    assertionMessage = "The number 1 should be found to be squarefree"
-    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isSquarefree(1))
+    var msg = "The number -1 should be found to be squarefree"
+    assertTrue(msg, NumberTheoreticFunctionsCalculator.isSquarefree(-1))
+    msg = "The number 0 should not be found to be squarefree"
+    assertFalse(msg, NumberTheoreticFunctionsCalculator.isSquarefree(0))
+    msg = "The number 1 should be found to be squarefree"
+    assertTrue(msg, NumberTheoreticFunctionsCalculator.isSquarefree(1))
     for (pIndex <- 0 to (maxPrimePi - 2)) {
       val p = primeSieve(pIndex)
-      assertionMessage = "The number " + p.toString + " should be found to be squarefree"
-      assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isSquarefree(p))
+      msg = "The number " + p.toString + " should be found to be squarefree"
+      assertTrue(msg, NumberTheoreticFunctionsCalculator.isSquarefree(p))
       val q = -primeSieve(pIndex + 1)
       val pq = p * q
-      assertionMessage = "The number " + pq.toString + " should be found to be squarefree"
-      assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isSquarefree(pq))
+      msg = "The number " + pq.toString + " should be found to be squarefree"
+      assertTrue(msg, NumberTheoreticFunctionsCalculator.isSquarefree(pq))
       val pSquared = p * p
-      assertionMessage = "The number " + pSquared.toString + " should not be found to be squarefree"
-      assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isSquarefree(pSquared))
+      msg = "The number " + pSquared.toString + " should not be found to be squarefree"
+      assertFalse(msg, NumberTheoreticFunctionsCalculator.isSquarefree(pSquared))
       if (p < 1290) {
       val pCubed = p * pSquared
-      assertionMessage = "The number " + pCubed.toString + " should not be found to be squarefree"
-      assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isSquarefree(pCubed))
+      msg = "The number " + pCubed.toString + " should not be found to be squarefree"
+      assertFalse(msg, NumberTheoreticFunctionsCalculator.isSquarefree(pCubed))
       if (p < 220) {
         val pCubedTimesQ = pCubed * q
-        assertionMessage = "The number " + pCubedTimesQ.toString + " should not be found to be squarefree"
-        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isSquarefree(pCubedTimesQ))
+        msg = "The number " + pCubedTimesQ.toString + " should not be found to be squarefree"
+        assertFalse(msg, NumberTheoreticFunctionsCalculator.isSquarefree(pCubedTimesQ))
       }}
     }
   }
 
-  @Test def testRandomSquarefreeNumber() {
+  @Test def testRandomSquarefreeNumber(): Unit = {
     println("randomSquarefreeNumber")
     val specifiedBound = 65536
     val randomSquarefree = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(specifiedBound)
@@ -143,7 +143,7 @@ class NumberTheoreticFunctionsCalculatorTest {
     assertTrue(assertionMessage, randomSquarefree <= specifiedBound)
   }
 
-  @Test def testMoebiusMu() {
+  @Test def testMoebiusMu(): Unit = {
     println("moebiusMu")
     assertEquals(-1, NumberTheoreticFunctionsCalculator.moebiusMu(19))
     assertEquals(0, NumberTheoreticFunctionsCalculator.moebiusMu(20))
@@ -165,7 +165,7 @@ class NumberTheoreticFunctionsCalculatorTest {
     assertEquals(1, NumberTheoreticFunctionsCalculator.symbolLegendre(8, 7))
   }
 
-  @Test def testLegendreSymbol() {
+  @Test def testLegendreSymbol(): Unit = {
     println("symbolLegendre")
     val quadRecipMsg = "Quadratic reciprocity applies: ("
     for {pIndex <- 1 until primePi1K
@@ -174,8 +174,8 @@ class NumberTheoreticFunctionsCalculatorTest {
       val q = primeSieve(qIndex)
       assertEquals(0, NumberTheoreticFunctionsCalculator.symbolLegendre(p, p))
       (p % 4, q % 4) match {
-        case (3, 3) => val assertionMessage = "(" + p.toString + ", " + q.toString + ") = -(" + q.toString + ", " + p.toString + ")"
-          assertNotEquals(assertionMessage, NumberTheoreticFunctionsCalculator.symbolLegendre(p, q), NumberTheoreticFunctionsCalculator.symbolLegendre(q, p))
+        case (3, 3) => val msg = "(" + p.toString + ", " + q.toString + ") = -(" + q.toString + ", " + p.toString + ")"
+          assertNotEquals(msg, NumberTheoreticFunctionsCalculator.symbolLegendre(p, q), NumberTheoreticFunctionsCalculator.symbolLegendre(q, p))
         case _ => val assertionMessage = quadRecipMsg + p.toString + ", " + q.toString + ") = (" + q.toString + ", " + p.toString + ")"
           assertEquals(assertionMessage, NumberTheoreticFunctionsCalculator.symbolLegendre(p, q), NumberTheoreticFunctionsCalculator.symbolLegendre(q, p))
       }
@@ -317,7 +317,7 @@ class NumberTheoreticFunctionsCalculatorTest {
     }
   }
 
-  @Test def testKernel() {
+  @Test def testKernel(): Unit = {
     println("kernel")
     val expected = 14
     var num = 14
@@ -335,7 +335,7 @@ class NumberTheoreticFunctionsCalculatorTest {
 
 //  private def invalidFunctionF(n: Int): Int = 10
 
-  @Test def testEuclideanGCD() {
+  @Test def testEuclideanGCD(): Unit = {
     println("euclideanGCD")
     assertEquals(1, NumberTheoreticFunctionsCalculator.euclideanGCD(-27, 14))
     assertEquals(3, NumberTheoreticFunctionsCalculator.euclideanGCD(-27, 15))
@@ -517,7 +517,7 @@ class NumberTheoreticFunctionsCalculatorTest {
     assertEquals(expected, actual)
   }
 
-  @Test def testFieldClassNumber() {
+  @Test def testFieldClassNumber(): Unit = {
     println("fieldClassNumber")
     val numbersHeegner = Array(-1, -2, -3, -7, -11, -19, -43, -67, -163)
     for (d <- numbersHeegner) {

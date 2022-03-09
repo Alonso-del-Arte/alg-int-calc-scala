@@ -177,19 +177,22 @@ class ImagQuadIntLineTest {
     }
   }
 
-  @Test def testByBadStepNotDivisible() {
+  @Test def testByBadStepNotDivisible(): Unit = {
     val byBadStep = new ImagQuadInt(1, 2, ringGaussian)
     try {
       val result = gaussianLine.by(byBadStep)
-      val failMsg = "Trying to use bad step " + byBadStep.toString + " should have caused an exception, not given result " + result.toString
-      fail(failMsg)
+      val msg = "Trying to use bad step " + byBadStep.toString +
+        " should have caused an exception, not given result " + result.toString
+      fail(msg)
     } catch {
       case iae: IllegalArgumentException => println("Trying to use bad step " + byBadStep.toString + " correctly triggered IllegalArgumentException")
         println("\"" + iae.getMessage + "\"")
-        val assertionMessage = "Cause of IllegalArgumentException should be NotDivisibleException"
-        assertTrue(assertionMessage, iae.getCause.isInstanceOf[NotDivisibleException])
-      case e: Exception => val failMsg = e.getClass.getName + " is the wrong exception to throw for trying to use bad step " + byBadStep.toString
-        fail(failMsg)
+        val msg = "Cause of IllegalArgumentException should be NotDivisibleException"
+        assertTrue(msg, iae.getCause.isInstanceOf[NotDivisibleException])
+      case e: Exception => val msg = e.getClass.getName +
+        " is the wrong exception to throw for trying to use bad step " +
+        byBadStep.toString
+        fail(msg)
     }
   }
 

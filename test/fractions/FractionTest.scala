@@ -173,7 +173,7 @@ class FractionTest {
     }
   }
 
-  @Test def testTo() {
+  @Test def testTo(): Unit = {
     println("to")
     val fourSevenths = new Fraction(4, 7)
     val threeHalves = new Fraction(3, 2)

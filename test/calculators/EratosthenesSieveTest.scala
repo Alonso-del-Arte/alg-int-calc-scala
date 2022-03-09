@@ -24,12 +24,14 @@ class EratosthenesSieveTest {
     assertEquals(assertionMessage, expected, actual)
   }
 
-  @Test(expected = classOf[IndexOutOfBoundsException]) def testNegativeIndex() {
+  @Test(expected = classOf[IndexOutOfBoundsException])
+  def testNegativeIndex(): Unit = {
     val result = primeSieve(-10)
     println("Sieve reports prime(-10) = " + result)
   }
 
-  @Test(expected = classOf[IndexOutOfBoundsException]) def testExcessiveIndex() {
+  @Test(expected = classOf[IndexOutOfBoundsException])
+  def testExcessiveIndex(): Unit = {
     val result = primeSieve(2000)
     println("Sieve reports prime(2000) = " + result)
   }
