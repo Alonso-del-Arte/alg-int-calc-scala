@@ -194,7 +194,6 @@ class FractionTest {
     assertEquals(expected, actual, testDelta)
   }
 
-  // TODO: Simplify test
   @Test def testCompare(): Unit = {
     println("compare")
     val negThreeHalves = new Fraction(-3, 2)
@@ -202,53 +201,12 @@ class FractionTest {
     val approxPi113ths = new Fraction(355, 113)
     val approxPiSevenths = new Fraction(22, 7)
     val sevenHalves = new Fraction(7, 2)
-    var comparison = negThreeHalves.compare(approxPiFiftieths)
-    var msg = negThreeHalves.toString + " should be found to be less than " +
-      approxPiFiftieths.toString
-    assertTrue(msg, comparison < 0)
-    comparison = approxPiFiftieths.compare(approxPi113ths)
-    msg = approxPiFiftieths.toString +
-      " should be found to be less than " + approxPi113ths
-    assertTrue(msg, comparison < 0)
-    comparison = approxPi113ths.compare(approxPiSevenths)
-    msg = approxPi113ths.toString +
-      " should be found to be less than " + approxPiSevenths
-    assertTrue(msg, comparison < 0)
-    comparison = approxPiSevenths.compare(sevenHalves)
-    msg = approxPiSevenths.toString + " should be found to be less than " + sevenHalves.toString
-    assertTrue(msg, comparison < 0)
-    var equalFraction = new Fraction(-3, 2)
-    comparison = negThreeHalves.compare(equalFraction)
-    msg = negThreeHalves.toString + " should be found to be equal to " + equalFraction.toString
-    assertTrue(msg, comparison == 0)
-    equalFraction = new Fraction(157, 50)
-    comparison = approxPiFiftieths.compare(equalFraction)
-    msg = approxPiFiftieths.toString + " should be found to be equal to " + equalFraction.toString
-    assertTrue(msg, comparison == 0)
-    equalFraction = new Fraction(355, 113)
-    comparison = approxPi113ths.compare(equalFraction)
-    msg = approxPi113ths.toString + " should be found to be equal to " + equalFraction.toString
-    assertTrue(msg, comparison == 0)
-    equalFraction = new Fraction(22, 7)
-    comparison = approxPiSevenths.compare(equalFraction)
-    msg = approxPiSevenths.toString + " should be found to be equal to " + equalFraction.toString
-    assertTrue(msg, comparison == 0)
-    equalFraction = new Fraction(7, 2)
-    comparison = sevenHalves.compare(equalFraction)
-    msg = sevenHalves.toString + " should be found to be equal to " + equalFraction.toString
-    assertTrue(msg, comparison == 0)
-    comparison = approxPiFiftieths.compare(negThreeHalves)
-    msg = approxPiFiftieths.toString + " should be found to be more than " + negThreeHalves
-    assertTrue(msg, comparison > 0)
-    comparison = approxPi113ths.compare(approxPiFiftieths)
-    msg = approxPi113ths.toString + " should be found to be more than " + approxPiFiftieths
-    assertTrue(msg, comparison > 0)
-    comparison = approxPiSevenths.compare(approxPi113ths)
-    msg = approxPiSevenths.toString + " should be found to be more than " + approxPi113ths
-    assertTrue(msg, comparison > 0)
-    comparison = sevenHalves.compare(approxPiSevenths)
-    msg = sevenHalves.toString + " should be found to be more than " + approxPiSevenths
-    assertTrue(msg, comparison > 0)
+    val mixedUp = List(approxPi113ths, approxPiFiftieths, approxPiSevenths,
+      negThreeHalves, sevenHalves)
+    val expected = List(negThreeHalves, approxPiFiftieths, approxPi113ths,
+      approxPiSevenths, sevenHalves)
+    val actual = mixedUp.sorted
+    assertEquals(expected, actual)
   }
 
   @Test def testCompareThroughOperators(): Unit = {
