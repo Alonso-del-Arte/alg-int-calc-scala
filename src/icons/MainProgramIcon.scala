@@ -1,0 +1,5 @@
+package icons
+
+class MainProgramIcon {
+
+}
