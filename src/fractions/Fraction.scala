@@ -90,13 +90,12 @@ class Fraction(numer: Long, denom: Long = 1L) extends Ordered[Fraction] {
   }
 
   override def compare(that: Fraction): Int = {
-//    val diff = this - that
-//    diff.numerator match {
-//      case 0 => 0
-//      case n if n < 0 => -1
-//      case _ => 1
-//    }
-    0
+    val diff = this - that
+    diff.numerator match {
+      case 0 => 0
+      case n if n < 0 => -1
+      case _ => 1
+    }
   }
 
 }
