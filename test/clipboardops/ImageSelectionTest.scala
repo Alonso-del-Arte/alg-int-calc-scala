@@ -5,8 +5,9 @@ import java.awt.Graphics
 import java.awt.image.BufferedImage
 import java.io.IOException
 
-import org.junit.{After, AfterClass, Before, BeforeClass, Ignore, Test}
-import org.junit.Assert._
+import org.junit.{After, AfterClass, Before, BeforeClass, Ignore}
+import org.junit.jupiter.api.{AfterAll, AfterEach, BeforeAll, BeforeEach, Test}
+import org.junit.jupiter.api.Assertions._
 
 object ImageSelectionTest {
   val imgWindow = new TestImagePanel
@@ -59,33 +60,33 @@ class ImageSelectionTest {
 
   @Test def testGetTransferDataFlavors(): Unit = {
     println("getTransferDataFlavors")
-    var assertionMessage = "DataFlavors array should only have one DataFlavor"
+    var msg = "DataFlavors array should only have one DataFlavor"
     val flavors = ImageSelectionTest.imgSel.getTransferDataFlavors
-    assertEquals(assertionMessage, 1, flavors.length)
-    assertionMessage = "And that DataFlavor should be DataFlavor.imageFlavor"
-    assertEquals(assertionMessage, DataFlavor.imageFlavor, flavors(0))
+    assertEquals(1, flavors.length, msg)
+    msg = "And that DataFlavor should be DataFlavor.imageFlavor"
+    assertEquals(DataFlavor.imageFlavor, flavors(0), msg)
   }
 
   @Test def testIsDataFlavorSupported(): Unit = {
     println("isDataFlavorSupported")
     var currFlavor = DataFlavor.imageFlavor
-    var assertionMessage = currFlavor.toString + " should be supported"
-    assertTrue(assertionMessage, ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor))
+    var msg = currFlavor.toString + " should be supported"
+    assertTrue(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
     currFlavor = DataFlavor.allHtmlFlavor
-    assertionMessage = currFlavor.toString + " should not be supported"
-    assertFalse(assertionMessage, ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor))
+    msg = currFlavor.toString + " should not be supported"
+    assertFalse(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
     currFlavor = DataFlavor.fragmentHtmlFlavor
-    assertionMessage = currFlavor.toString + " should not be supported"
-    assertFalse(assertionMessage, ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor))
+    msg = currFlavor.toString + " should not be supported"
+    assertFalse(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
     currFlavor = DataFlavor.javaFileListFlavor
-    assertionMessage = currFlavor.toString + " should not be supported"
-    assertFalse(assertionMessage, ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor))
+    msg = currFlavor.toString + " should not be supported"
+    assertFalse(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
     currFlavor = DataFlavor.selectionHtmlFlavor
-    assertionMessage = currFlavor.toString + " should not be supported"
-    assertFalse(assertionMessage, ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor))
+    msg = currFlavor.toString + " should not be supported"
+    assertFalse(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
     currFlavor = DataFlavor.stringFlavor
-    assertionMessage = currFlavor.toString + " should not be supported"
-    assertFalse(assertionMessage, ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor))
+    msg = currFlavor.toString + " should not be supported"
+    assertFalse(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
   }
 
   @Test def testGetTransferData(): Unit = {
@@ -124,13 +125,13 @@ class ImageSelectionTest {
 
   @Test def testHasOwnership(): Unit = {
     println("hasOwnership")
-    var assertionMessage = "ImageSelection should have ownership of the clipboard"
-    assertTrue(assertionMessage, ImageSelectionTest.imgSel.hasOwnership)
+    var msg = "ImageSelection should have ownership of the clipboard"
+    assertTrue(ImageSelectionTest.imgSel.hasOwnership, msg)
     val testClipMsg = "This message was placed by ImageSelectionTest.testHasOwnership()"
     ImageSelectionTest.strSel = new StringSelection(testClipMsg)
     ImageSelectionTest.sysClip.setContents(ImageSelectionTest.strSel, ImageSelectionTest.strSel)
-    assertionMessage = "StringSelection, not ImageSelection, should have ownership of the clipboard"
-    assertFalse(assertionMessage, ImageSelectionTest.imgSel.hasOwnership)
+    msg = "StringSelection, not ImageSelection, should have ownership of the clipboard"
+    assertFalse(ImageSelectionTest.imgSel.hasOwnership, msg)
   }
 
   @After def tearDown(): Unit = {

@@ -1,16 +1,23 @@
 package calculators
 
-import algebraics.{AlgInt, AlgebraicDegreeOverflowException, NonEuclideanDomainException, UnsupportedNumberDomainException}
-import algebraics.quadratics.{IllDefQuadInt, IllDefQuadRing, ImagQuadInt, ImagQuadRing, QuadInt, RealQuadInt, RealQuadRing}
+import algebraics.{AlgInt, AlgebraicDegreeOverflowException,
+  NonEuclideanDomainException, UnsupportedNumberDomainException}
+import algebraics.quadratics.{IllDefQuadInt, IllDefQuadRing, ImagQuadInt,
+  ImagQuadRing, QuadInt, RealQuadInt, RealQuadRing}
 
-import org.junit.Test
-import org.junit.Assert._
+import calculators.NumberTheoreticFunctionsCalculator._
+
+import java.time.Duration
+
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions._
 
 object NumberTheoreticFunctionsCalculatorTest {
 
   def adj23Norm(num: AlgInt): Long = {
     var interim = Math.abs(num.norm)
-    while (NumberTheoreticFunctionsCalculator.euclideanGCD(interim, 23L) > 1 && interim > 0) {
+    while (euclideanGCD(interim, 23L) > 1
+        && interim > 0) {
       interim /= 23
       interim *= 26
     }
@@ -35,7 +42,7 @@ class NumberTheoreticFunctionsCalculatorTest {
   @Test def testPrimeFactors(): Unit = {
     println("primeFactors")
     val expected = Vector[Int](-1, 2, 7)
-    val actual = NumberTheoreticFunctionsCalculator.primeFactors(-14)
+    val actual = primeFactors(-14)
     assertEquals(expected, actual)
   }
 
@@ -45,31 +52,31 @@ class NumberTheoreticFunctionsCalculatorTest {
     val norm7 = new RealQuadInt(3, 1, ringZ2)
     val toBeFactored = new RealQuadInt(-12, -11, ringZ2)
     val expected = Vector[RealQuadInt](negOne, sqrt2, norm7, norm7)
-    val actual = NumberTheoreticFunctionsCalculator.primeFactors(toBeFactored)
+    val actual = primeFactors(toBeFactored)
     assertEquals(expected, actual)
   }
 
   @Test def testIsPrime(): Unit = {
     println("isPrime")
     var number = 7
-    var assertionMessage = number.toString + " should be found to be prime"
-    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(number))
+    var msg = number.toString + " should be found to be prime"
+    assert(isPrime(number), msg)
     number = 8
-    assertionMessage = number.toString + " should not be found to be prime"
-    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(number))
+    msg = number.toString + " should not be found to be prime"
+    assert(!isPrime(number), msg)
     var longNumber = 13L
-    assertionMessage = longNumber.toString + " should be found to be prime"
-    assertTrue(NumberTheoreticFunctionsCalculator.isPrime(longNumber))
+    msg = longNumber.toString + " should be found to be prime"
+    assert(isPrime(longNumber), msg)
     longNumber = 14L
-    assertionMessage = longNumber.toString + " should not be found to be prime"
-    assertFalse(NumberTheoreticFunctionsCalculator.isPrime(longNumber))
+    msg = longNumber.toString + " should not be found to be prime"
+    assert(!isPrime(longNumber), msg)
     for (i <- 0 until maxPrimePi) {
       val currPrime = primeSieve(i)
-      assertionMessage = currPrime.toString + " should be found to be prime"
-      assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currPrime))
+      msg = currPrime.toString + " should be found to be prime"
+      assert(isPrime(currPrime), msg)
       val currComposite = currPrime * 210
-      assertionMessage = currComposite.toString + " should not be found to be prime"
-      assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currComposite))
+      msg = currComposite.toString + " should not be found to be prime"
+      assert(!isPrime(currComposite), msg)
     }
     // TODO: Write test for AlgInt
   }
@@ -79,49 +86,57 @@ class NumberTheoreticFunctionsCalculatorTest {
     val ringZi5 = new ImagQuadRing(-5)
     var num = new ImagQuadInt(1, 1, ringZi5)
     var msg = num.toString + " should be found to be irreducible"
-    assertTrue(msg, NumberTheoreticFunctionsCalculator.isIrreducible(num))
+    assert(isIrreducible(num), msg)
     num = new ImagQuadInt(1, 7, ringZi5)
     msg = num.toString + " should not be found to be irreducible"
-    assertFalse(msg, NumberTheoreticFunctionsCalculator.isIrreducible(num))
+    assert(!isIrreducible(num), msg)
   }
 
   @Test def testIsDivisibleBy(): Unit = {
     println("isDivisibleBy")
     val testDividend = new RealQuadInt(59, 0, ringZPhi)
     val testDivisor = new RealQuadInt(8, 1, ringZPhi)
-    var assertionMessage = testDividend.toString + " should be found to be divisible by " + testDivisor.toString
-    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(testDividend, testDivisor))
-    assertionMessage = testDivisor.toString + " should not be found to be divisible by " + testDividend.toString
-    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(testDivisor, testDividend))
+    var msg = testDividend.toString + " should be found to be divisible by " +
+      testDivisor.toString
+    assert(NumberTheoreticFunctionsCalculator
+      .isDivisibleBy(testDividend, testDivisor), msg)
+    msg = testDivisor.toString + " should not be found to be divisible by " +
+      testDividend.toString
+    assert(!NumberTheoreticFunctionsCalculator
+      .isDivisibleBy(testDivisor, testDividend), msg)
   }
 
+  // TODO: Split into smaller tests
   @Test def testIsSquarefree(): Unit = {
     println("isSquarefree")
     var msg = "The number -1 should be found to be squarefree"
-    assertTrue(msg, NumberTheoreticFunctionsCalculator.isSquarefree(-1))
+    assert(isSquarefree(-1), msg)
     msg = "The number 0 should not be found to be squarefree"
-    assertFalse(msg, NumberTheoreticFunctionsCalculator.isSquarefree(0))
+    assert(isSquarefree(0), msg)
     msg = "The number 1 should be found to be squarefree"
-    assertTrue(msg, NumberTheoreticFunctionsCalculator.isSquarefree(1))
+    assert(isSquarefree(1), msg)
     for (pIndex <- 0 to (maxPrimePi - 2)) {
       val p = primeSieve(pIndex)
       msg = "The number " + p.toString + " should be found to be squarefree"
-      assertTrue(msg, NumberTheoreticFunctionsCalculator.isSquarefree(p))
+      assert(isSquarefree(p), msg)
       val q = -primeSieve(pIndex + 1)
       val pq = p * q
       msg = "The number " + pq.toString + " should be found to be squarefree"
-      assertTrue(msg, NumberTheoreticFunctionsCalculator.isSquarefree(pq))
+      assert(isSquarefree(pq), msg)
       val pSquared = p * p
-      msg = "The number " + pSquared.toString + " should not be found to be squarefree"
-      assertFalse(msg, NumberTheoreticFunctionsCalculator.isSquarefree(pSquared))
+      msg = "The number " + pSquared.toString +
+        " should not be found to be squarefree"
+      assert(!isSquarefree(pSquared), msg)
       if (p < 1290) {
       val pCubed = p * pSquared
-      msg = "The number " + pCubed.toString + " should not be found to be squarefree"
-      assertFalse(msg, NumberTheoreticFunctionsCalculator.isSquarefree(pCubed))
+      msg = "The number " + pCubed.toString +
+        " should not be found to be squarefree"
+      assert(isSquarefree(pCubed), msg)
       if (p < 220) {
         val pCubedTimesQ = pCubed * q
-        msg = "The number " + pCubedTimesQ.toString + " should not be found to be squarefree"
-        assertFalse(msg, NumberTheoreticFunctionsCalculator.isSquarefree(pCubedTimesQ))
+        msg = "The number " + pCubedTimesQ.toString +
+          " should not be found to be squarefree"
+        assert(!isSquarefree(pCubedTimesQ), msg)
       }}
     }
   }
@@ -129,109 +144,119 @@ class NumberTheoreticFunctionsCalculatorTest {
   @Test def testRandomSquarefreeNumber(): Unit = {
     println("randomSquarefreeNumber")
     val specifiedBound = 65536
-    val randomSquarefree = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(specifiedBound)
-    println("Function came up with this potentially squarefree random number: " + randomSquarefree.toString)
-    var assertionMessage = "Number said to be squarefree should not be divisible by 4"
-    assertFalse(assertionMessage, randomSquarefree % 4 == 0)
+    val randomSquarefree = NumberTheoreticFunctionsCalculator
+      .randomSquarefreeNumber(specifiedBound)
+    println("Function came up with this potentially squarefree random number: "
+      + randomSquarefree.toString)
+    var msg = "Number said to be squarefree should not be divisible by 4"
+    assert(randomSquarefree % 4 != 0, msg)
     val squareRootFloor = Math.floor(Math.sqrt(randomSquarefree)).asInstanceOf[Int]
     for (i <- 3 to squareRootFloor by 2) {
       val square = i * i
-      assertionMessage = "Number said to be squarefree should not be divisible by " + square.toString
-      assertFalse(assertionMessage, randomSquarefree % square == 0)
+      msg = "Number said to be squarefree should not be divisible by " +
+        square.toString
+      assert(randomSquarefree % square != 0, msg)
     }
-    assertionMessage = "Random number should not exceed specified bound of " + specifiedBound.toString
-    assertTrue(assertionMessage, randomSquarefree <= specifiedBound)
+    msg = "Random number should not exceed specified bound of " +
+      specifiedBound.toString
+    assert(randomSquarefree <= specifiedBound, msg)
   }
 
   @Test def testMoebiusMu(): Unit = {
     println("moebiusMu")
-    assertEquals(-1, NumberTheoreticFunctionsCalculator.moebiusMu(19))
-    assertEquals(0, NumberTheoreticFunctionsCalculator.moebiusMu(20))
-    assertEquals(1, NumberTheoreticFunctionsCalculator.moebiusMu(21))
+    assertEquals(-1, moebiusMu(19))
+    assertEquals(0, moebiusMu(20))
+    assertEquals(1, moebiusMu(21))
     for (pIndex <- 0 to (maxPrimePi - 2)) {
       val currPrime = primeSieve(pIndex)
-      assertEquals(-1, NumberTheoreticFunctionsCalculator.moebiusMu(currPrime))
+      assertEquals(-1, moebiusMu(currPrime))
       val squaredPrime = currPrime * currPrime
-      assertEquals(0, NumberTheoreticFunctionsCalculator.moebiusMu(squaredPrime))
+      assertEquals(0, NumberTheoreticFunctionsCalculator
+        .moebiusMu(squaredPrime))
       val nextPrime = primeSieve(pIndex + 1)
       val semiPrime = currPrime * nextPrime
-      assertEquals(1, NumberTheoreticFunctionsCalculator.moebiusMu(semiPrime))
+      assertEquals(1, moebiusMu(semiPrime))
     }
   }
 
   @Test def testLegendreSymbolP7Cases(): Unit = {
-    assertEquals(-1, NumberTheoreticFunctionsCalculator.symbolLegendre(6, 7))
-    assertEquals(0, NumberTheoreticFunctionsCalculator.symbolLegendre(7, 7))
-    assertEquals(1, NumberTheoreticFunctionsCalculator.symbolLegendre(8, 7))
+    assertEquals(-1, symbolLegendre(6, 7))
+    assertEquals(0, symbolLegendre(7, 7))
+    assertEquals(1, symbolLegendre(8, 7))
   }
 
   @Test def testLegendreSymbol(): Unit = {
     println("symbolLegendre")
-    val quadRecipMsg = "Quadratic reciprocity applies: ("
+    val quadRecipMsg = "Quadratic reciprocity applies: "
     for {pIndex <- 1 until primePi1K
          qIndex <- (pIndex + 1) to primePi1K} {
       val p = primeSieve(pIndex)
       val q = primeSieve(qIndex)
-      assertEquals(0, NumberTheoreticFunctionsCalculator.symbolLegendre(p, p))
+      assertEquals(0, symbolLegendre(p, p))
       (p % 4, q % 4) match {
-        case (3, 3) => val msg = "(" + p.toString + ", " + q.toString + ") = -(" + q.toString + ", " + p.toString + ")"
-          assertNotEquals(msg, NumberTheoreticFunctionsCalculator.symbolLegendre(p, q), NumberTheoreticFunctionsCalculator.symbolLegendre(q, p))
-        case _ => val assertionMessage = quadRecipMsg + p.toString + ", " + q.toString + ") = (" + q.toString + ", " + p.toString + ")"
-          assertEquals(assertionMessage, NumberTheoreticFunctionsCalculator.symbolLegendre(p, q), NumberTheoreticFunctionsCalculator.symbolLegendre(q, p))
+        case (3, 3) => val msg = s"($p, $q) = -($q, $p)"
+          assertNotEquals(NumberTheoreticFunctionsCalculator
+            .symbolLegendre(p, q), NumberTheoreticFunctionsCalculator
+            .symbolLegendre(q, p), msg)
+        case _ => val msg = s"$quadRecipMsg($p, $q) = ($q, $p)"
+          assertEquals(symbolLegendre(p, q),
+            symbolLegendre(q, p), msg)
       }
     }
   }
 
   @Test def testLegendreSymbolBadArgEvenPrime(): Unit = {
     try {
-      val result = NumberTheoreticFunctionsCalculator.symbolLegendre(7, 2)
-      fail("Calling Legendre(7, 2) should have triggered an exception, not given result " + result.toString)
+      val result = symbolLegendre(7, 2)
+      fail("Legendre(7, 2) should not have given result " + result.toString)
     } catch {
-      case iae: IllegalArgumentException => println("Calling Legendre(7, 2) correctly triggered IllegalArgumentException")
+      case iae: IllegalArgumentException =>
+        println("Legendre(7, 2) correctly triggered IllegalArgumentException")
         println("\"" + iae.getMessage + "\"")
     }
   }
 
   @Test def testLegendreSymbolBadArgs(): Unit = {
     try {
-      val result = NumberTheoreticFunctionsCalculator.symbolLegendre(12, 35)
-      fail("Calling Legendre(12, 35) should have triggered an exception, not given result " + result.toString)
+      val result = symbolLegendre(12, 35)
+      fail("Legendre(12, 35) should not have given result " + result.toString)
     } catch {
-      case iae: IllegalArgumentException => println("Calling Legendre(12, 35) correctly triggered IllegalArgumentException")
+      case iae: IllegalArgumentException =>
+        println("Legendre(12, 35) correctly triggered IllegalArgumentException")
         println("\"" + iae.getMessage + "\"")
     }
   }
 
   @Test def testJacobiSymbolM35Cases(): Unit = {
-    assertEquals(-1, NumberTheoreticFunctionsCalculator.symbolJacobi(104, 35))
-    assertEquals(0, NumberTheoreticFunctionsCalculator.symbolJacobi(105, 35))
-    assertEquals(1, NumberTheoreticFunctionsCalculator.symbolJacobi(106, 35))
+    assertEquals(-1, symbolJacobi(104, 35))
+    assertEquals(0, symbolJacobi(105, 35))
+    assertEquals(1, symbolJacobi(106, 35))
   }
 
   @Test def testJacobiLegendreCorrespondence(): Unit = {
-    for {pindex <- 1 until primePi1K
-         qindex <- pindex until primePi1K} {
-      val p = primeSieve(pindex)
-      val q = primeSieve(qindex)
-      val assertionMessage = "Jacobi(" + p.toString + ", " + q.toString + ") should be equal to Legendre(" + p.toString + ", " + q.toString + ")"
-      val expected = NumberTheoreticFunctionsCalculator.symbolLegendre(p, q)
-      val actual = NumberTheoreticFunctionsCalculator.symbolJacobi(p, q)
-      assertEquals(assertionMessage, expected, actual)
+    for {pIndex <- 1 until primePi1K
+         qIndex <- pIndex until primePi1K} {
+      val p = primeSieve(pIndex)
+      val q = primeSieve(qIndex)
+      val msg = s"Jacobi($p, $q) should be equal to Legendre($p, $q)"
+      val expected = symbolLegendre(p, q)
+      val actual = symbolJacobi(p, q)
+      assertEquals(expected, actual, msg)
     }
     println("Jacobi-Legendre correspondence checks out...")
   }
 
   @Test def testJacobiSymbol(): Unit = {
     println("symbolJacobi")
-    for {pindex <- 1 until primePi1K
-         qindex <- pindex until primePi1K} {
-      val p = primeSieve(pindex)
-      val q = primeSieve(qindex)
+    for {pIndex <- 1 until primePi1K
+         qIndex <- pIndex until primePi1K} {
+      val p = primeSieve(pIndex)
+      val q = primeSieve(qIndex)
       val m = p * q
       for (n <- 15 to 20) {
-        val expected = NumberTheoreticFunctionsCalculator.symbolLegendre(n, p) *
-          NumberTheoreticFunctionsCalculator.symbolLegendre(n, q)
-        val actual = NumberTheoreticFunctionsCalculator.symbolJacobi(n, m)
+        val expected = symbolLegendre(n, p) *
+          symbolLegendre(n, q)
+        val actual = symbolJacobi(n, m)
         assertEquals(expected, actual)
       }
     }
@@ -239,51 +264,57 @@ class NumberTheoreticFunctionsCalculatorTest {
 
   @Test def testJacobiSymbolBadArgEvenM(): Unit = {
     try {
-      val result = NumberTheoreticFunctionsCalculator.symbolJacobi(7, 2)
-      val failMsg = "Calling Jacobi(7, 2) should have caused an exception, not given result " + result.toString
-      fail(failMsg)
+      val result = symbolJacobi(7, 2)
+      val msg = "Jacobi(7, 2) should not have given result " + result.toString
+      fail(msg)
     } catch {
-      case iae: IllegalArgumentException => println("Calling Jacobi(7, 2) correctly caused IllegalArgumentException")
+      case iae: IllegalArgumentException =>
+        println("Jacobi(7, 2) correctly caused IllegalArgumentException")
         println("\"" + iae.getMessage + "\"")
-      case e: Exception => val failMsg = e.getClass.getName + " is the wrong exception to throw for calling Jacobi(7, 2)"
-        fail(failMsg)
+      case e: Exception =>
+        val msg = e.getClass.getName +
+          " is the wrong exception to throw for calling Jacobi(7, 2)"
+        fail(msg)
     }
   }
 
   @Test def testJacobiSymbolBadArgNegM(): Unit = {
     try {
-      val result = NumberTheoreticFunctionsCalculator.symbolJacobi(7, -3)
-      val failMsg = "Calling Jacobi(7, -3) should have caused an exception, not given result " + result.toString
-      fail(failMsg)
+      val result = symbolJacobi(7, -3)
+      val msg = "Jacobi(7, -3) should not have given result " + result.toString
+      fail(msg)
     } catch {
-      case iae: IllegalArgumentException => println("Calling Jacobi(7, -3) correctly caused IllegalArgumentException")
+      case iae: IllegalArgumentException =>
+        println("Jacobi(7, -3) correctly caused IllegalArgumentException")
         println("\"" + iae.getMessage + "\"")
-      case e: Exception => val failMsg = e.getClass.getName + " is the wrong exception to throw for calling Jacobi(7, -3)"
-        fail(failMsg)
+      case e: Exception =>
+        val msg = e.getClass.getName +
+          " is the wrong exception to throw for calling Jacobi(7, -3)"
+        fail(msg)
     }
   }
 
   @Test def testKroneckerSymbolM70CasesWNegN(): Unit = {
-    assertEquals(-1, NumberTheoreticFunctionsCalculator.symbolKronecker(-33, 70))
-    assertEquals(0, NumberTheoreticFunctionsCalculator.symbolKronecker(-32, 70))
-    assertEquals(1, NumberTheoreticFunctionsCalculator.symbolKronecker(-31, 70))
+    assertEquals(-1, symbolKronecker(-33, 70))
+    assertEquals(0, symbolKronecker(-32, 70))
+    assertEquals(1, symbolKronecker(-31, 70))
   }
 
   @Test def testKroneckerSymbolM70Cases(): Unit = {
-    assertEquals(-1, NumberTheoreticFunctionsCalculator.symbolKronecker(31, 70))
-    assertEquals(0, NumberTheoreticFunctionsCalculator.symbolKronecker(32, 70))
-    assertEquals(1, NumberTheoreticFunctionsCalculator.symbolKronecker(33, 70))
+    assertEquals(-1, symbolKronecker(31, 70))
+    assertEquals(0, symbolKronecker(32, 70))
+    assertEquals(1, symbolKronecker(33, 70))
   }
 
   @Test def testKroneckerLegendreCorrespondence(): Unit = {
-    for {pindex <- 1 until primePi1K
-         qindex <- pindex until primePi1K} {
-      val p = primeSieve(pindex)
-      val q = primeSieve(qindex)
-      val assertionMessage = "Kronecker(" + p.toString + ", " + q.toString + ") should be equal to Legendre(" + p.toString + ", " + q.toString + ")"
-      val expected = NumberTheoreticFunctionsCalculator.symbolLegendre(p, q)
-      val actual = NumberTheoreticFunctionsCalculator.symbolKronecker(p, q)
-      assertEquals(assertionMessage, expected, actual)
+    for {pIndex <- 1 until primePi1K
+         qIndex <- pIndex until primePi1K} {
+      val p = primeSieve(pIndex)
+      val q = primeSieve(qIndex)
+      val msg = s"Kronecker($p, $q) should be equal to Legendre($p, $q)"
+      val expected = symbolLegendre(p, q)
+      val actual = symbolKronecker(p, q)
+      assertEquals(expected, actual, msg)
     }
     println("Kronecker-Legendre correspondence checks out...")
   }
@@ -291,8 +322,8 @@ class NumberTheoreticFunctionsCalculatorTest {
   @Test def testKroneckerJacobiCorrespondence(): Unit = {
     for {j <- -10 to 10
          b <- 5 to 15 by 2} {
-      val expected = NumberTheoreticFunctionsCalculator.symbolJacobi(j, b)
-      val actual = NumberTheoreticFunctionsCalculator.symbolKronecker(j, b)
+      val expected = symbolJacobi(j, b)
+      val actual = symbolKronecker(j, b)
       assertEquals(expected, actual)
     }
     println("Kronecker-Jacobi correspondence checks out...")
@@ -301,19 +332,19 @@ class NumberTheoreticFunctionsCalculatorTest {
   @Test def testKroneckerSymbol(): Unit = {
     println("symbolKronecker")
     for (m <- -24 to 24 by 8) {
-      assertEquals(-1, NumberTheoreticFunctionsCalculator.symbolKronecker(m + 3, 2))
-      assertEquals(-1, NumberTheoreticFunctionsCalculator.symbolKronecker(m + 5, 2))
-      assertEquals(0, NumberTheoreticFunctionsCalculator.symbolKronecker(m, 2))
-      assertEquals(0, NumberTheoreticFunctionsCalculator.symbolKronecker(m + 2, 2))
-      assertEquals(0, NumberTheoreticFunctionsCalculator.symbolKronecker(m + 4, 2))
-      assertEquals(0, NumberTheoreticFunctionsCalculator.symbolKronecker(m + 6, 2))
-      assertEquals(1, NumberTheoreticFunctionsCalculator.symbolKronecker(m + 1, 2))
-      assertEquals(1, NumberTheoreticFunctionsCalculator.symbolKronecker(m + 7, 2))
+      assertEquals(-1, symbolKronecker(m + 3, 2))
+      assertEquals(-1, symbolKronecker(m + 5, 2))
+      assertEquals(0, symbolKronecker(m, 2))
+      assertEquals(0, symbolKronecker(m + 2, 2))
+      assertEquals(0, symbolKronecker(m + 4, 2))
+      assertEquals(0, symbolKronecker(m + 6, 2))
+      assertEquals(1, symbolKronecker(m + 1, 2))
+      assertEquals(1, symbolKronecker(m + 7, 2))
       val expected = Integer.signum(m + 1)
-      assertEquals(expected, NumberTheoreticFunctionsCalculator.symbolKronecker(m + 1, -2))
-      assertEquals(-expected, NumberTheoreticFunctionsCalculator.symbolKronecker(m + 3, -2))
-      assertEquals(-expected, NumberTheoreticFunctionsCalculator.symbolKronecker(m + 5, -2))
-      assertEquals(expected, NumberTheoreticFunctionsCalculator.symbolKronecker(m + 7, -2))
+      assertEquals(expected, symbolKronecker(m + 1, -2))
+      assertEquals(-expected, symbolKronecker(m + 3, -2))
+      assertEquals(-expected, symbolKronecker(m + 5, -2))
+      assertEquals(expected, symbolKronecker(m + 7, -2))
     }
   }
 
@@ -321,13 +352,13 @@ class NumberTheoreticFunctionsCalculatorTest {
     println("kernel")
     val expected = 14
     var num = 14
-    var actual = NumberTheoreticFunctionsCalculator.kernel(num)
+    var actual = kernel(num)
     assertEquals(expected, actual)
     num *= 2
-    actual = NumberTheoreticFunctionsCalculator.kernel(num)
+    actual = kernel(num)
     assertEquals(expected, actual)
     num *= 7
-    actual = NumberTheoreticFunctionsCalculator.kernel(num)
+    actual = kernel(num)
     assertEquals(expected, actual)
   }
 
@@ -337,49 +368,32 @@ class NumberTheoreticFunctionsCalculatorTest {
 
   @Test def testEuclideanGCD(): Unit = {
     println("euclideanGCD")
-    assertEquals(1, NumberTheoreticFunctionsCalculator.euclideanGCD(-27, 14))
-    assertEquals(3, NumberTheoreticFunctionsCalculator.euclideanGCD(-27, 15))
-    assertEquals(9, NumberTheoreticFunctionsCalculator.euclideanGCD(-27, 18))
-    assertEquals(1, NumberTheoreticFunctionsCalculator.euclideanGCD(-21L, 13L))
-    assertEquals(3, NumberTheoreticFunctionsCalculator.euclideanGCD(-21L, -144L))
-    assertEquals(27, NumberTheoreticFunctionsCalculator.euclideanGCD(-27, 0))
-    assertEquals(28, NumberTheoreticFunctionsCalculator.euclideanGCD(8400, 8372))
-//    try {
-//      val result = NumberTheoreticFunctionsCalculator.euclideanGCD(-27, 18, negCube(_))
-//      println("gcd(-27, 18) with negative cube function gave this result: " + result)
-//      val failMsg = "gcd(-27, 18) with negative cube function should have triggered exception, not given result " + result
-//      fail(failMsg)
-//    } catch {
-//      case iae: IllegalArgumentException => println("gcd(-27, 18) with negative cube function correctly triggered IllegalArgumentException")
-//        println("\"" + iae.getMessage + "\"")
-//      case e: Exception => val failMsg = e.getClass.getName + " is wrong exception to throw for gcd(-27, 18) with negative cube function"
-//        fail(failMsg)
-//    }
-//    try {
-//      val result = NumberTheoreticFunctionsCalculator.euclideanGCD(-27, 18, invalidFunctionF(_))
-//      println("gcd(-27, 18) with invalid function F gave this result: " + result)
-//      val failMsg = "gcd(-27, 18) with invalid function F should have triggered exception, not given result " + result
-//      fail(failMsg)
-//    } catch {
-//      case nede: NonEuclideanDomainException => println("gcd(-27, 18) with invalid function F correctly triggered NonEuclideanDomainException")
-//        println("\"" + nede.getMessage + "\"")
-//      case e: Exception => val failMsg = e.getClass.getName + " is wrong exception to throw for gcd(-27, 18) with invalid function F"
-//        fail(failMsg)
-//    }
+    assertEquals(1, euclideanGCD(-27, 14))
+    assertEquals(3, euclideanGCD(-27, 15))
+    assertEquals(9, euclideanGCD(-27, 18))
+    assertEquals(1, euclideanGCD(-21L, 13L))
+    assertEquals(3, euclideanGCD(-21L, -144L))
+    assertEquals(27, euclideanGCD(-27, 0))
+    assertEquals(28, euclideanGCD(8400, 8372))
   }
 
   @Test def testEuclideanGCDAlgDegOverflow(): Unit = {
     val a = new ImagQuadInt(3, 7, ringEisenstein, 2)
     val b = new RealQuadInt(5, 8, ringZ2)
     try {
-      val gcd = NumberTheoreticFunctionsCalculator.euclideanGCD(a, b)
-      val failMsg = "Trying to calculate gcd(" + a.toString + ", " + b.toString + ") should have caused exception, not given result " + gcd.toString
-      fail(failMsg)
+      val gcd = euclideanGCD(a, b)
+      val msg =
+        s"Trying to calculate gcd($a, $b) should not have given result $gcd"
+      fail(msg)
     } catch {
-      case adoe: AlgebraicDegreeOverflowException => println("Trying to calculate gcd(" + a.toString + ", " + b.toString + ") correctly triggered AlgebraicDegreeOverflowException")
+      case adoe: AlgebraicDegreeOverflowException => println("Trying to calculate gcd(" +
+        a.toString + ", " + b.toString +
+        ") correctly triggered AlgebraicDegreeOverflowException")
         println("\"" + adoe.getMessage + "\"")
-      case e: Exception => val failMsg = e.getClass.getName + " is wrong exception to throw for trying to calculate gcd(" + a.toString + ", " + b.toString + ")"
-        fail(failMsg)
+      case e: Exception => val msg = e.getClass.getName +
+        " is wrong exception to throw for trying to calculate gcd(" +
+        a.toString + ", " + b.toString + ")"
+        fail(msg)
     }
   }
 
@@ -387,30 +401,30 @@ class NumberTheoreticFunctionsCalculatorTest {
     var a: QuadInt = new ImagQuadInt(3, 1, ringGaussian)
     var b: QuadInt = new ImagQuadInt(21, -8, ringGaussian)
     var expected: QuadInt = new ImagQuadInt(2, -1, ringGaussian)
-    var actual = NumberTheoreticFunctionsCalculator.euclideanGCD(a, b)
+    var actual = euclideanGCD(a, b)
     assertEquals(expected, actual)
     a = new ImagQuadInt(19, -1, ringEisenstein, 2)
     b = new ImagQuadInt(7, 1, ringEisenstein)
     expected = new ImagQuadInt(5, -3, ringEisenstein, 2)
-    actual = NumberTheoreticFunctionsCalculator.euclideanGCD(a, b)
+    actual = euclideanGCD(a, b)
     assertEquals(expected, actual)
     a = new RealQuadInt(46, 20, ringZ2)
     b = new RealQuadInt(-21, -3, ringZ2)
     expected = new RealQuadInt(7, 1, ringZ2)
-    actual = NumberTheoreticFunctionsCalculator.euclideanGCD(a, b)
+    actual = euclideanGCD(a, b)
     assertEquals(expected, actual)
   }
 
-  @Test(timeout = 30000)
+  @Test
   def testEuclideanGCDNonEuclOQi19(): Unit = {
     val ringOQi19 = new ImagQuadRing(-19)
     val primeFactorOf5 = new ImagQuadInt(1, 1, ringOQi19, 2)
     val ten = new ImagQuadInt(10, 0, ringOQi19)
-    val actual = NumberTheoreticFunctionsCalculator.euclideanGCD(primeFactorOf5, ten)
+    val actual = euclideanGCD(primeFactorOf5, ten)
     assertEquals(primeFactorOf5, actual)
     val primeFactorOf7 = new ImagQuadInt(3, 1, ringOQi19, 2)
     try {
-      val result = NumberTheoreticFunctionsCalculator.euclideanGCD(ten, primeFactorOf7)
+      val result = euclideanGCD(ten, primeFactorOf7)
       val failMsg = "Trying to calculate gcd(" + ten.toString + ", " + primeFactorOf7.toString + ") by the Euclidean algorithm should have caused exception, not given result " + result.toString
       fail(failMsg)
     } catch {
@@ -421,49 +435,50 @@ class NumberTheoreticFunctionsCalculatorTest {
     }
   }
 
-  @Test(timeout = 30000)
+  @Test
   def testEuclideanGCDNonEuclZ14(): Unit = {
     val ringZ14 = new RealQuadRing(14)
     val primeFactorOf13 = new RealQuadInt(1, 1, ringZ14)
     val two = new RealQuadInt(2, 0, ringZ14)
-    try {
-      val result = NumberTheoreticFunctionsCalculator.euclideanGCD(two, primeFactorOf13)
-      val failMsg = "Trying to calculate gcd(" + two.toString + ", " + primeFactorOf13.toString + ") by the Euclidean algorithm should have caused exception, not given result " + result.toString
-      fail(failMsg)
-    } catch {
-      case nede: NonEuclideanDomainException => println("Trying to calculate gcd(" + two.toString + ", " + primeFactorOf13.toString + ") by the Euclidean algorithm correctly triggered NonEuclideanDomainException")
-        println("\"" + nede.getMessage + "\"")
-      case e: Exception => val failMsg = e.getClass.getName + " is wrong exception to throw for Trying to calculate gcd(" + two.toString + ", " + primeFactorOf13.toString + ") by the Euclidean algorithm"
-        fail(failMsg)
-    }
+    assertTimeoutPreemptively[Unit](Duration.ofSeconds(30), () => {
+      val exc = assertThrows(classOf[NonEuclideanDomainException], () => {
+        val result = euclideanGCD(two, primeFactorOf13)
+        println(s"gcd($two, $primeFactorOf13) said to be $result?")
+      })
+      val excMsg = exc.getMessage
+      assert(excMsg != null, "Message should not be null")
+      println("\"" + excMsg + "\"")
+    })
   }
 
-  @Test(timeout = 30000)
+  // TODO: Break up into two separate tests
+  @Test
   def testEuclideanGCDNonEuclOQ69(): Unit = {
     val ringOQ69 = new RealQuadRing(69)
     val primeFactorOf23 = new RealQuadInt(23, 3, ringOQ69, 2)
     val factorOf48 = new RealQuadInt(18, 2, ringOQ69)
-    try {
-      val result = NumberTheoreticFunctionsCalculator.euclideanGCD(factorOf48, primeFactorOf23)
-      val failMsg = "Trying to calculate gcd(" + factorOf48.toString + ", " + primeFactorOf23.toString + ") by the Euclidean algorithm should have caused exception, not given result " + result.toString
-      fail(failMsg)
-    } catch {
-      case nede: NonEuclideanDomainException => println("Trying to calculate gcd(" + factorOf48.toString + ", " + primeFactorOf23.toString + ") by the Euclidean algorithm correctly triggered NonEuclideanDomainException")
-        println("\"" + nede.getMessage + "\"")
-      case e: Exception => val failMsg = e.getClass.getName + " is wrong exception to throw for Trying to calculate gcd(" + factorOf48.toString + ", " + primeFactorOf23.toString + ") by the Euclidean algorithm"
-        fail(failMsg)
-    }
-    val result = NumberTheoreticFunctionsCalculator.euclideanGCD(primeFactorOf23, factorOf48, NumberTheoreticFunctionsCalculatorTest.adj23Norm)
-    assertEquals(1L, Math.abs(result.norm))
+    val result = NumberTheoreticFunctionsCalculator
+      .euclideanGCD(primeFactorOf23, factorOf48,
+        NumberTheoreticFunctionsCalculatorTest.adj23Norm).norm
+    assertEquals(1L, Math.abs(result))
+    assertTimeoutPreemptively[Unit](Duration.ofSeconds(30), () => {
+      val exc = assertThrows(classOf[NonEuclideanDomainException], () => {
+        val unexpectedResult = euclideanGCD(primeFactorOf23, factorOf48)
+        println(s"gcd($primeFactorOf23, $factorOf48) said to be $unexpectedResult?")
+      })
+      val excMsg = exc.getMessage
+      assert(excMsg != null, "Message should not be null")
+      println("\"" + excMsg + "\"")
+    })
   }
 
   @Test def testFundamentalUnit(): Unit = {
     println("fundamentalUnit")
     var expected = new RealQuadInt(1, 1, ringZ2)
-    var actual = NumberTheoreticFunctionsCalculator.fundamentalUnit(ringZ2)
+    var actual = fundamentalUnit(ringZ2)
     assertEquals(expected, actual)
     expected = new RealQuadInt(1, 1, ringZPhi, 2)
-    actual = NumberTheoreticFunctionsCalculator.fundamentalUnit(ringZPhi)
+    actual = fundamentalUnit(ringZPhi)
     assertEquals(expected, actual)
   }
 
@@ -471,33 +486,34 @@ class NumberTheoreticFunctionsCalculatorTest {
     println("placeInPrimarySector")
     var num = new ImagQuadInt(-1, 6, ringGaussian)
     var expected = new ImagQuadInt(6, 1, ringGaussian)
-    var actual = NumberTheoreticFunctionsCalculator.placeInPrimarySector(num)
+    var actual = placeInPrimarySector(num)
     assertEquals(expected, actual)
     num = new ImagQuadInt(-17, -7, ringEisenstein, 2)
     expected = new ImagQuadInt(19, -5, ringEisenstein, 2)
-    actual = NumberTheoreticFunctionsCalculator.placeInPrimarySector(num)
+    actual = placeInPrimarySector(num)
     assertEquals(expected, actual)
   }
 
   @Test def testPlaceInPrimarySectorRealQuadInt(): Unit = {
     val num = new RealQuadInt(-5, -2, ringZ2)
     val expected = new RealQuadInt(5, 2, ringZ2)
-    val actual = NumberTheoreticFunctionsCalculator.placeInPrimarySector(num)
+    val actual = placeInPrimarySector(num)
     assertEquals(expected, actual)
   }
 
   @Test def testPlaceInPrimarySectorUnsupportedRing(): Unit = {
     val num = new IllDefQuadInt(-8, 3, ringUnsupported)
-    try {
-      val result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(num)
-      val failMsg = "Trying to place " + num.toString + " of ring " + ringUnsupported.toString + " of type " + ringUnsupported.getClass.getName + " should have caused an exception, not given result " + result.toString
-      fail(failMsg)
-    } catch {
-      case unde: UnsupportedNumberDomainException => println("Trying to place " + num.toString + " of ring" + ringUnsupported.toString + " of type " + ringUnsupported.getClass.getName + " correctly triggered UnsupportedNumberDomainException")
-        println("\"" + unde.getMessage + "\"")
-      case e: Exception => val failMsg = e.getClass.getName + " is the wrong exception to throw for trying to place " + num.toString + " of ring " + ringUnsupported.toString + " of type " + ringUnsupported.getClass.getName
-        fail(failMsg)
-    }
+    val exc = assertThrows(classOf[UnsupportedNumberDomainException], () => {
+      val result = placeInPrimarySector(num)
+      println("Trying to place " + num.toString + " of ring "
+        + ringUnsupported.toString + " of type "
+        + ringUnsupported.getClass.getName
+        + " should have caused an exception, not given result "
+        + result.toString)
+    })
+    val excMsg = exc.getMessage
+    assert(excMsg != null, "Message should not be null")
+    println("\"" + excMsg + "\"")
   }
 
   @Test def testDivideOutUnits(): Unit = {
@@ -505,7 +521,8 @@ class NumberTheoreticFunctionsCalculatorTest {
     val ring = new RealQuadRing(10)
     val expected = new RealQuadInt(1, 2, ring)
     val unitsMultipliedIn = new RealQuadInt(5281, 1670, ring)
-    val actual = NumberTheoreticFunctionsCalculator.divideOutUnits(unitsMultipliedIn)
+    val actual = NumberTheoreticFunctionsCalculator
+      .divideOutUnits(unitsMultipliedIn)
     assertEquals(expected, actual)
   }
 
@@ -513,7 +530,7 @@ class NumberTheoreticFunctionsCalculatorTest {
     println("getOneInRing")
     val ring = new ImagQuadRing(-15)
     val expected = new ImagQuadInt(1, 0, ring)
-    val actual = NumberTheoreticFunctionsCalculator.getOneInRing(ring)
+    val actual = getOneInRing(ring)
     assertEquals(expected, actual)
   }
 
@@ -522,16 +539,18 @@ class NumberTheoreticFunctionsCalculatorTest {
     val numbersHeegner = Array(-1, -2, -3, -7, -11, -19, -43, -67, -163)
     for (d <- numbersHeegner) {
       val imagUFD = new ImagQuadRing(d)
-      assertEquals(1, NumberTheoreticFunctionsCalculator.fieldClassNumber(imagUFD))
+      assertEquals(1, NumberTheoreticFunctionsCalculator
+        .fieldClassNumber(imagUFD))
       val imagNonUFD = new ImagQuadRing(5 * d)
-      assertTrue(NumberTheoreticFunctionsCalculator.fieldClassNumber(imagNonUFD) > 1)
+      assert(fieldClassNumber(imagNonUFD) > 1)
     }
     val selRealUFDDiscrs = Array(2, 3, 6, 7, 11, 13, 17, 19, 21, 22, 23, 29)
     for (dR <- selRealUFDDiscrs) {
       val realUFD = new RealQuadRing(dR)
-      assertEquals(1, NumberTheoreticFunctionsCalculator.fieldClassNumber(realUFD))
+      assertEquals(1, NumberTheoreticFunctionsCalculator
+        .fieldClassNumber(realUFD))
       val realNonUFD = new RealQuadRing(5 * dR)
-      assertTrue(NumberTheoreticFunctionsCalculator.fieldClassNumber(realNonUFD) > 1)
+      assert(fieldClassNumber(realNonUFD) > 1)
     }
   }
 

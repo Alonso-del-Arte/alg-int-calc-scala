@@ -1,10 +1,12 @@
 package algebraics.quartics
 
-import algebraics.{AlgebraicDegreeOverflowException, NotDivisibleException, UnsupportedNumberDomainException}
-import algebraics.quadratics.{ImagQuadInt, ImagQuadRing, QuadInt, RealQuadInt, RealQuadRing}
+import algebraics.{AlgebraicDegreeOverflowException, NotDivisibleException,
+  UnsupportedNumberDomainException}
+import algebraics.quadratics.{ImagQuadInt, ImagQuadRing, QuadInt, RealQuadInt,
+  RealQuadRing}
 
-import org.junit.Test
-import org.junit.Assert._
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions._
 
 class Zeta8IntTest {
   private val ZERO = new Zeta8Int(0, 0, 0, 0)
@@ -274,6 +276,7 @@ class Zeta8IntTest {
     fail("Haven't written test yet")
   }
 
+  // TODO: Break up into smaller tests
   @Test def testConvertFromQuadInt(): Unit = {
     println("convertFromQuadInt")
     var currImagRing = new ImagQuadRing(-1)
@@ -297,20 +300,18 @@ class Zeta8IntTest {
     actual = Zeta8Int.convertFromQuadInt(currQuadInt)
     assertEquals(expected, actual)
     currQuadInt = new RealQuadInt(8, 3, currRealRing)
-    try {
+    val exc = assertThrows(classOf[UnsupportedNumberDomainException], () => {
       actual = Zeta8Int.convertFromQuadInt(currQuadInt)
-      val failMsg = "Trying to convert " + currQuadInt.toString + " to an integer in " + Zeta8Ring.toString + " should have caused an exception, not given result " + actual.toString
-      fail(failMsg)
-    } catch {
-      case _: AlgebraicDegreeOverflowException => val failMsg = "AlgebraicDegreeOverflowException is the wrong exception to throw for trying to convert " + currQuadInt.toString + " to an integer in " + Zeta8Ring.toString + " since no number of algebraic degree greater than 4 is involved"
-        fail(failMsg)
-      case unde: UnsupportedNumberDomainException => println("Trying to convert " + currQuadInt.toString + " to an integer in " + Zeta8Ring.toString + " correctly triggered UnsupportedNumberDomainException")
-        println(unde.getMessage)
-      case e: Exception => val failMsg = e.getClass.getName + " is the wrong exception to throw for trying to convert " + currQuadInt.toString + " to an integer in " + Zeta8Ring.toString
-        fail(failMsg)
-    }
+      println("Trying to convert " + currQuadInt.toString + " to an integer in "
+        + Zeta8Ring.toString + " should not have given result "
+        + actual.toString)
+    })
+    val excMsg = exc.getMessage
+    assert(excMsg != null, "Message should not be null")
+    println("\"" + excMsg + "\"")
   }
 
+  // TODO: Break up into smaller tests
   @Test def testConvertToQuadInt(): Unit = {
     println("convertToQuadInt")
     var currImagRing = new ImagQuadRing(-2)
@@ -325,16 +326,14 @@ class Zeta8IntTest {
     expected = new RealQuadInt(0, 1, ringZ2)
     actual = SQRT_2.convertToQuadInt
     assertEquals(expected, actual)
-    try {
+    val exc = assertThrows(classOf[AlgebraicDegreeOverflowException], () => {
       actual = ZETA_8.convertToQuadInt
-      val failMsg = "Trying to convert " + ZETA_8.toString + " to QuadInt should have caused an exception, not given result " + actual.toString
-      fail(failMsg)
-    } catch {
-      case adoe: AlgebraicDegreeOverflowException => println("Trying to convert " + ZETA_8.toString + " to quadratic integer correctly triggered AlgebraicDegreeOverflowException")
-        println("\"" + adoe.getMessage + "\"")
-      case e: Exception => val failMsg = e.getClass.getName + " is the wrong exception for trying to convert " + ZETA_8.toString + " to quadratic integer"
-        fail(failMsg)
-    }
+      println("Trying to convert " + ZETA_8.toString
+        + " to QuadInt should not have given result " + actual.toString)
+    })
+    val excMsg = exc.getMessage
+    assert(excMsg != null, "Message should not be null")
+    println("\"" + excMsg + "\"")
   }
 
   @Test def testPlus(): Unit = {
@@ -392,13 +391,10 @@ class Zeta8IntTest {
       actual = ZETA_8_CUBED / IMAG_UNIT_I
       assertEquals(ZETA_8, actual)
     } catch {
-      case nde: NotDivisibleException => val failMsg = "NotDivisibleException should not have occurred for trying to divide " + nde.causingDividend + " by " + nde.causingDivisor
-        println(failMsg)
-        println("\"" + nde.getMessage + "\"")
-        fail(failMsg)
+      case nde: NotDivisibleException => fail(nde.getMessage)
       case e: Exception => println(e.getMessage)
-        val failMsg = "Division should not have caused " + e.getClass.getName
-        fail(failMsg)
+        val msg = "Division should not have caused " + e.getClass.getName
+        fail(msg)
     }
   }
 
@@ -418,32 +414,41 @@ class Zeta8IntTest {
         val divisionB = product / multiplicandA
         assertEquals(multiplicandB, divisionB)
       } catch {
-        case nde: NotDivisibleException => val failMsg = "Since " + multiplicandA.toString + " times " + multiplicandB.toString + " is " + product.toString + ", division of that product by a multiplicand should not have caused NotDivisibleException"
-          println(failMsg)
-          println("Tried to divide " + nde.causingDividend.toString + " by " + nde.causingDivisor.toString)
-          println("\"" + nde.getMessage + "\"")
-          fail(failMsg)
-        case e: Exception => val failMsg = e.getClass.getName + " should not have occurred trying to divide " + product.toString + " by one of its divisors"
-          fail(failMsg)
+        case nde: NotDivisibleException => fail(nde.getMessage)
+        case e: Exception =>
+          val msg = e.getClass.getName +
+            " should not have occurred trying to divide " + product.toString +
+            " by one of its divisors"
+          fail(msg)
       }
     }
   }
 
   @Test def testDivisionByZero(): Unit = {
-    println("Division by zero")
     try {
       val actual = ZETA_8 / ZERO
-      val failMsg = "Trying to divide " + ZETA_8.toString + " by 0 should have caused an exception, not given result " + actual.toString
-      fail(failMsg)
+      val msg = "Trying to divide " + ZETA_8.toString +
+        " by 0 should have caused an exception, not given result " +
+        actual.toString
+      fail(msg)
     } catch {
-      case iae: IllegalArgumentException => println("Trying to divide " + ZETA_8.toString + " by 0 correctly triggered IllegalArgumentException")
+      case iae: IllegalArgumentException =>
+        println("Trying to divide " + ZETA_8.toString
+          + " by 0 correctly triggered IllegalArgumentException")
         println("\"" + iae.getMessage + "\"")
-      case ae: ArithmeticException => println("ArithmeticException is acceptable for trying to divide " + ZETA_8.toString + " by 0")
+      case ae: ArithmeticException =>
+        println("ArithmeticException is acceptable for trying to divide "
+          + ZETA_8.toString + " by 0")
         println("\"" + ae.getMessage + "\"")
-      case _: NotDivisibleException => val failMsg = "NotDivisibleException is inappropriate for trying to divide " + ZETA_8.toString + " by 0, since that implies the quotient can be rounded to an algebraic integer"
-        fail(failMsg)
-      case e: Exception => val failMsg = e.getClass.getName + " is not the right exception to throw for trying to divide " + ZETA_8.toString + " by 0"
-        fail(failMsg)
+      case _: NotDivisibleException =>
+        val msg = "NotDivisibleException is inappropriate for trying to divide " +
+          ZETA_8.toString + " by 0"
+        fail(msg)
+      case e: Exception =>
+        val msg = e.getClass.getName +
+          " is not the right exception to throw for trying to divide " +
+          ZETA_8.toString + " by 0"
+        fail(msg)
     }
   }
 

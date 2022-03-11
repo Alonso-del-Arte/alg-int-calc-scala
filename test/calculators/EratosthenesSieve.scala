@@ -37,24 +37,24 @@ class EratosthenesSieve(threshold: Int) {
 
   /**
     * Gives the prime number at a specified index.
-    * @param idx The index for the prime number to retrieve. The first prime,
-    *            2, is at index 0, the second is 3 at index 1, the third prime
-    *            5 is at index 1, etc.
+    * @param index The index for the prime number to retrieve. The first prime,
+    *              2, is at index 0, the second is 3 at index 1, the third prime
+    *              5 is at index 1, etc.
     * @return The prime number specified by the index, e.g., 97 for index 24.
     * @throws IndexOutOfBoundsException If the index is negative, or if the
     *                                   index is greater than what was sieved
     *                                   up to at initialization.
     */
-  def apply(idx: Int): Int = {
-    if (idx < 0) {
-      val excMsg = "Index " + idx + " is out of bounds."
+  def apply(index: Int): Int = {
+    if (index < 0) {
+      val excMsg = s"Index $index is out of bounds"
       throw new IndexOutOfBoundsException(excMsg)
     }
-    if (idx >= list.size) {
-      val excMsg = "Index " + idx + " is out of bounds since only " + list.size + " numbers are available"
+    if (index >= list.size) {
+      val excMsg = s"Index $index out of bounds, only ${list.size} available"
       throw new IndexOutOfBoundsException(excMsg)
     }
-    list(idx)
+    list(index)
   }
 
 }
