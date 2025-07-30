@@ -27,6 +27,9 @@ hs_err_pid*
 out/
 *.iml
 
+# Vim
+*.swp
+
 # macOS
 .DS_Store
 .AppleDouble
