@@ -1,21 +1,22 @@
 package clipboardops
 
-import java.awt.datatransfer.{Clipboard, DataFlavor, StringSelection, UnsupportedFlavorException}
+import java.awt.datatransfer.{Clipboard, DataFlavor, StringSelection,
+  UnsupportedFlavorException}
 import java.awt.Graphics
 import java.awt.image.BufferedImage
 import java.io.IOException
 
-import org.junit.{After, AfterClass, Before, BeforeClass, Ignore}
 import org.junit.jupiter.api.{AfterAll, AfterEach, BeforeAll, BeforeEach, Test}
 import org.junit.jupiter.api.Assertions._
 
 object ImageSelectionTest {
-  val imgWindow = new TestImagePanel
-  val sysClip: Clipboard = imgWindow.getToolkit.getSystemClipboard
-  var strSel = new StringSelection("")
-  var img = new BufferedImage(TestImagePanel.PANEL_WIDTH, TestImagePanel.PANEL_HEIGHT, BufferedImage.TYPE_INT_RGB)
-  val graph: Graphics = img.getGraphics
-  var imgSel = new ImageSelection(img)
+  private val imgWindow = new TestImagePanel
+  private val sysClip: Clipboard = imgWindow.getToolkit.getSystemClipboard
+  private var strSel = new StringSelection("")
+  private val img = new BufferedImage(TestImagePanel.PANEL_WIDTH,
+    TestImagePanel.PANEL_HEIGHT, BufferedImage.TYPE_INT_RGB)
+  private val graph: Graphics = img.getGraphics
+  private val imgSel = new ImageSelection(img)
 
   def reportClip(): Unit = {
     val currFlavors = sysClip.getAvailableDataFlavors
@@ -24,11 +25,13 @@ object ImageSelectionTest {
       if (flavor.equals(DataFlavor.stringFlavor)) {
         try {
           val fromClip = sysClip.getData(flavor)
-          print(" --> \"" + fromClip + "\"")
+          print(" --> \"" + fromClip.toString + "\"")
         } catch {
-          case ufe: UnsupportedFlavorException => println("Encountered UnsupportedFlavorException for DataFlavor.stringFlavor")
+          case ufe: UnsupportedFlavorException =>
+            println("UnsupportedFlavorException for " + flavor.toString)
             println("\"" + ufe.getMessage + "\"")
-          case ioe: IOException => println("Encountered IOException trying to read text from the clipboard")
+          case ioe: IOException =>
+            println("IOException trying to read text from the clipboard")
             println("\"" + ioe.getMessage + "\"")
         }
       }
@@ -37,16 +40,16 @@ object ImageSelectionTest {
     println()
   }
 
-  @BeforeClass def setUpClass(): Unit = {
+  @BeforeAll def setUpClass(): Unit = {
     println("Prior to test set up, clipboard has the following data flavors:")
     reportClip()
-    val initMsgClip = "This message was placed by the ImageSelectionTest constructor"
+    val initMsgClip = "This message was placed by setUpClass"
     strSel = new StringSelection(initMsgClip)
     sysClip.setContents(strSel, strSel)
     imgWindow.paint(graph)
   }
 
-  @AfterClass def tearDownClass(): Unit = {
+  @AfterAll def tearDownClass(): Unit = {
     println("After running the tests, the clipboard has the following data flavors:")
     reportClip()
     imgWindow.closePanel()
@@ -56,7 +59,8 @@ object ImageSelectionTest {
 
 class ImageSelectionTest {
 
-  @Before def setUp(): Unit = ImageSelectionTest.sysClip.setContents(ImageSelectionTest.imgSel, ImageSelectionTest.imgSel)
+  @BeforeEach def setUp(): Unit = ImageSelectionTest.sysClip
+    .setContents(ImageSelectionTest.imgSel, ImageSelectionTest.imgSel)
 
   @Test def testGetTransferDataFlavors(): Unit = {
     println("getTransferDataFlavors")
@@ -71,54 +75,52 @@ class ImageSelectionTest {
     println("isDataFlavorSupported")
     var currFlavor = DataFlavor.imageFlavor
     var msg = currFlavor.toString + " should be supported"
-    assertTrue(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
+    assert(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
     currFlavor = DataFlavor.allHtmlFlavor
     msg = currFlavor.toString + " should not be supported"
-    assertFalse(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
+    assert(!ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
     currFlavor = DataFlavor.fragmentHtmlFlavor
     msg = currFlavor.toString + " should not be supported"
-    assertFalse(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
+    assert(!ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
     currFlavor = DataFlavor.javaFileListFlavor
     msg = currFlavor.toString + " should not be supported"
-    assertFalse(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
+    assert(!ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
     currFlavor = DataFlavor.selectionHtmlFlavor
     msg = currFlavor.toString + " should not be supported"
-    assertFalse(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
+    assert(!ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
     currFlavor = DataFlavor.stringFlavor
     msg = currFlavor.toString + " should not be supported"
-    assertFalse(ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
+    assert(!ImageSelectionTest.imgSel.isDataFlavorSupported(currFlavor), msg)
   }
 
   @Test def testGetTransferData(): Unit = {
     println("getTransferData")
     try {
-      val data = ImageSelectionTest.imgSel.getTransferData(DataFlavor.imageFlavor)
+      val data = ImageSelectionTest.imgSel
+        .getTransferData(DataFlavor.imageFlavor)
       assertEquals(ImageSelectionTest.img, data)
     } catch {
-      case e: Exception => val failMsg = e.getClass.getName + " should not have occurred trying to access ImageSelection transfer data with correct DataFlavor"
-        println(failMsg)
-        println("\"" + e.getMessage + "\"")
-        fail(failMsg)
+      case e: Exception =>
+        val msg = e.getClass.getName +
+          " should not have occurred with correct DataFlavor"
+        fail(msg)
     }
   }
 
   @Test def testGetTransferDataWrongFlavor(): Unit = {
     val flavor = DataFlavor.selectionHtmlFlavor
-    try {
+    val exc = assertThrows(classOf[UnsupportedFlavorException], () => {
       val data = ImageSelectionTest.imgSel.getTransferData(flavor)
-      val failMsg = "Trying to use " + flavor.toString + " to get ImageSelection transfer data should have caused an exception, not given data " + data.toString
-      fail(failMsg)
-    } catch {
-      case ufe: UnsupportedFlavorException => println("Trying to use " + flavor.toString + " to get ImageSelection transfer data correctly caused UnsupportedFlavorException")
-        println("\"" + ufe.getMessage + "\"")
-      case e: Exception => val failMsg = e.getClass.getName + " is the wrong exception to throw for trying to access ImageSelection transfer data with wrong DataFlavor"
-        println(failMsg)
-        println("\"" + e.getMessage + "\"")
-        fail(failMsg)
-    }
+      println("Trying to use " + flavor.toString
+        + " to get ImageSelection transfer data should not have given data "
+        + data.toString)
+    })
+    val excMsg = exc.getMessage
+    assert(excMsg != null, "Message should not be null")
+    println("\"" + excMsg + "\"")
   }
 
-  @Ignore @Test def testLostOwnership(): Unit = {
+  @Test def testLostOwnership(): Unit = {
     println("lostOwnership")
     fail("Haven't written test yet")
   }
@@ -126,15 +128,17 @@ class ImageSelectionTest {
   @Test def testHasOwnership(): Unit = {
     println("hasOwnership")
     var msg = "ImageSelection should have ownership of the clipboard"
-    assertTrue(ImageSelectionTest.imgSel.hasOwnership, msg)
-    val testClipMsg = "This message was placed by ImageSelectionTest.testHasOwnership()"
+    assert(ImageSelectionTest.imgSel.hasOwnership, msg)
+    val testClipMsg =
+      "This message was placed by ImageSelectionTest.testHasOwnership()"
     ImageSelectionTest.strSel = new StringSelection(testClipMsg)
-    ImageSelectionTest.sysClip.setContents(ImageSelectionTest.strSel, ImageSelectionTest.strSel)
+    ImageSelectionTest.sysClip.setContents(ImageSelectionTest.strSel,
+      ImageSelectionTest.strSel)
     msg = "StringSelection, not ImageSelection, should have ownership of the clipboard"
-    assertFalse(ImageSelectionTest.imgSel.hasOwnership, msg)
+    assert(!ImageSelectionTest.imgSel.hasOwnership, msg)
   }
 
-  @After def tearDown(): Unit = {
+  @AfterEach def tearDown(): Unit = {
     println("Right now the clipboard has the following data flavors:")
     ImageSelectionTest.reportClip()
   }
