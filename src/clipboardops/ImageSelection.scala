@@ -5,7 +5,7 @@ import java.awt.Image
 
 object ImageSelection {
 
-  val FLAVOR: Array[DataFlavor] = Array(DataFlavor.imageFlavor)
+  val FLAVOR: Array[DataFlavor] = Array(DataFlavor.stringFlavor)
 
 }
 
@@ -20,9 +20,9 @@ class ImageSelection(image: Image) extends ClipboardOwner with Transferable {
   override def getTransferData(flavor: DataFlavor): AnyRef = {
     if (flavor.equals(DataFlavor.imageFlavor)) {
       this.clipboardOwnershipFlag = true
-      this.img
+      "this.img"
     } else {
-      throw new UnsupportedFlavorException(flavor)
+      throw new RuntimeException();// UnsupportedFlavorException(flavor)
     }
   }
 
