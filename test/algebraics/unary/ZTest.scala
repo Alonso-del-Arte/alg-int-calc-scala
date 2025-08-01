@@ -12,7 +12,7 @@ class ZTest {
 
   @Test def testIsPurelyReal(): Unit = {
     println("isPurelyReal")
-    assertTrue(Z.isPurelyReal)
+    assert(Z.isPurelyReal, "Expecting Z to be purely real")
   }
 
   @Test def testDiscriminant(): Unit = {
