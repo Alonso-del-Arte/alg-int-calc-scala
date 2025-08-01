@@ -1,11 +1,12 @@
 package clipboardops
 
-import java.awt.datatransfer.{Clipboard, ClipboardOwner, DataFlavor, Transferable, UnsupportedFlavorException}
+import java.awt.datatransfer.{Clipboard, ClipboardOwner, DataFlavor,
+  Transferable, UnsupportedFlavorException}
 import java.awt.Image
 
 object ImageSelection {
 
-  val FLAVOR: Array[DataFlavor] = Array(DataFlavor.stringFlavor)
+  val FLAVOR: Array[DataFlavor] = Array(DataFlavor.imageFlavor)
 
 }
 
