@@ -8,7 +8,7 @@ object Z extends IntRing {
 
   override def getMaxAlgebraicDegree: Int = 1
 
-  override def isPurelyReal: Boolean = true
+  override def isPurelyReal: Boolean = false
 
   override def discriminant: Int = 1
 
