@@ -22,7 +22,7 @@ class ImageSelection(image: Image) extends ClipboardOwner with Transferable {
       this.clipboardOwnershipFlag = true
       "this.img"
     } else {
-      throw new RuntimeException();// UnsupportedFlavorException(flavor)
+      throw new UnsupportedFlavorException(flavor)
     }
   }
 
