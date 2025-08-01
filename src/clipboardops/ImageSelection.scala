@@ -20,7 +20,7 @@ class ImageSelection(image: Image) extends ClipboardOwner with Transferable {
   override def getTransferData(flavor: DataFlavor): AnyRef = {
     if (flavor.equals(DataFlavor.imageFlavor)) {
       this.clipboardOwnershipFlag = true
-      "this.img"
+      this.img
     } else {
       throw new UnsupportedFlavorException(flavor)
     }
