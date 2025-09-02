@@ -48,3 +48,9 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Miscellaneous
+src/draft/
+test/draft
+localdevicenotes.txt
+scratchpad.txt
