@@ -145,49 +145,51 @@ object NumberTheoreticFunctionsCalculator {
     case number => number.norm
   }
 
-  def euclideanGCD(a: Long, b: Long): Long = b match {
+  // TODO: Rewrite tests
+  def euclideanGCD(a: Long, b: Long,
+                   norm: Int => Int = Math.abs): Long = -1 /* match {
     case 0 => a;
-    case _ => Math.abs(euclideanGCD(b, a % b))
-  }
+    case _ => Math.abs(euclideanGCD(b, a % b)) */
+//  }
 
-  def euclideanGCD(a: AlgInt, b: AlgInt, eucFn: AlgInt => Long = normWrap): AlgInt = {
-    if (a.getRing != b.getRing) {
-      val excMsg = "GCD(" + a.toString + ", " + b.toString + ") is in ring of higher degree"
-      throw new AlgebraicDegreeOverflowException(excMsg, a, b)
-    }
-    a.getRing match {
-      case ring: QuadRing => var currA = a.asInstanceOf[QuadInt]
-        var currB = b.asInstanceOf[QuadInt]
-        if (eucFn(a) < eucFn(b)) {
-          val swapper = currA
-          currA = currB
-          currB = swapper
-        }
-        val zero = QuadInt(0, 0, ring)
-        var currRemainder = zero
-        while (currB != zero) {
-          try {
-            currA / currB
-            currRemainder = zero
-          } catch {
-            case nde: NotDivisibleException => val roundDiv = nde.roundTowardsZero.asInstanceOf[QuadInt]
-              val tempMultiple = roundDiv * currB
-              currRemainder = currA - tempMultiple
-          }
-          val phiB = eucFn(currB)
-          val phiRem = eucFn(currRemainder)
-          if (phiB <= phiRem) {
-            val excMsg = ring.toString + " is not Euclidean for provided function since f(" + currB.toString + ") = " + phiB.toString + " but f(" + currRemainder.toString + ") = " + phiRem.toString
-            throw new NonEuclideanDomainException(excMsg, currB, currRemainder, eucFn)
-          }
-          currA = currB
-          currB = currRemainder
-        }
-        currA
-      case _ => val excMsg = "The domain " + a.getRing.toString + " is not yet supported for the GCD operation"
-        throw new UnsupportedNumberDomainException(excMsg, a.getRing)
-    }
-  }
+//  def euclideanGCD(a: AlgInt, b: AlgInt, eucFn: AlgInt => Long = normWrap): AlgInt = {
+//    if (a.getRing != b.getRing) {
+//      val excMsg = "GCD(" + a.toString + ", " + b.toString + ") is in ring of higher degree"
+//      throw new AlgebraicDegreeOverflowException(excMsg, a, b)
+//    }
+//    a.getRing match {
+//      case ring: QuadRing => var currA = a.asInstanceOf[QuadInt]
+//        var currB = b.asInstanceOf[QuadInt]
+//        if (eucFn(a) < eucFn(b)) {
+//          val swapper = currA
+//          currA = currB
+//          currB = swapper
+//        }
+//        val zero = QuadInt(0, 0, ring)
+//        var currRemainder = zero
+//        while (currB != zero) {
+//          try {
+//            currA / currB
+//            currRemainder = zero
+//          } catch {
+//            case nde: NotDivisibleException => val roundDiv = nde.roundTowardsZero.asInstanceOf[QuadInt]
+//              val tempMultiple = roundDiv * currB
+//              currRemainder = currA - tempMultiple
+//          }
+//          val phiB = eucFn(currB)
+//          val phiRem = eucFn(currRemainder)
+//          if (phiB <= phiRem) {
+//            val excMsg = ring.toString + " is not Euclidean for provided function since f(" + currB.toString + ") = " + phiB.toString + " but f(" + currRemainder.toString + ") = " + phiRem.toString
+//            throw new NonEuclideanDomainException(excMsg, currB, currRemainder, eucFn)
+//          }
+//          currA = currB
+//          currB = currRemainder
+//        }
+//        currA
+//      case _ => val excMsg = "The domain " + a.getRing.toString + " is not yet supported for the GCD operation"
+//        throw new UnsupportedNumberDomainException(excMsg, a.getRing)
+//    }
+//  }
 
   def fundamentalUnit(ring: IntRing): AlgInt = new UnaryInt(0)
 
