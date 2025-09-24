@@ -1,5 +1,6 @@
 package algebraics.quadratics
 
+@Deprecated
 class IllDefQuadRing(d: Int) extends QuadRing(d) {
 
   override def isPurelyReal: Boolean = this.radicand > -1

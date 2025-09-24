@@ -1,5 +1,6 @@
 package algebraics.quadratics
 
+@Deprecated
 class IllDefQuadInt(a: Int, b: Int, r: IllDefQuadRing, denom: Int = 1)
   extends QuadInt(a, b, r, denom) {
 
