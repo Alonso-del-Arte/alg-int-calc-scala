@@ -2,8 +2,8 @@ package calculators
 
 import algebraics.{AlgInt, AlgebraicDegreeOverflowException,
   NonEuclideanDomainException, UnsupportedNumberDomainException}
-import algebraics.quadratics.{IllDefQuadInt, IllDefQuadRing, ImagQuadInt,
-  ImagQuadRing, QuadInt, RealQuadInt, RealQuadRing}
+import algebraics.quadratics.{ImagQuadInt, ImagQuadRing, QuadInt, RealQuadInt,
+  RealQuadRing}
 
 import calculators.NumberTheoreticFunctionsCalculator._
 
@@ -37,7 +37,6 @@ class NumberTheoreticFunctionsCalculatorTest {
   private val ringEisenstein = new ImagQuadRing(-3)
   private val ringZ2 = new RealQuadRing(2)
   private val ringZPhi = new RealQuadRing(5)
-  private val ringUnsupported = new IllDefQuadRing(1)
 
   @Test def testPrimeFactors(): Unit = {
     println("primeFactors")
@@ -509,18 +508,19 @@ class NumberTheoreticFunctionsCalculatorTest {
   }
 
   @Test def testPlaceInPrimarySectorUnsupportedRing(): Unit = {
-    val num = new IllDefQuadInt(-8, 3, ringUnsupported)
-    val exc = assertThrows(classOf[UnsupportedNumberDomainException], () => {
-      val result = placeInPrimarySector(num)
-      println("Trying to place " + num.toString + " of ring "
-        + ringUnsupported.toString + " of type "
-        + ringUnsupported.getClass.getName
-        + " should have caused an exception, not given result "
-        + result.toString)
-    })
-    val excMsg = exc.getMessage
-    assert(excMsg != null, "Message should not be null")
-    println("\"" + excMsg + "\"")
+    fail("REWRITE THIS TEST")
+//    val num = new IllDefQuadInt(-8, 3, ringUnsupported)
+//    val exc = assertThrows(classOf[UnsupportedNumberDomainException], () => {
+//      val result = placeInPrimarySector(num)
+//      println("Trying to place " + num.toString + " of ring "
+//        + ringUnsupported.toString + " of type "
+//        + ringUnsupported.getClass.getName
+//        + " should have caused an exception, not given result "
+//        + result.toString)
+//    })
+//    val excMsg = exc.getMessage
+//    assert(excMsg != null, "Message should not be null")
+//    println("\"" + excMsg + "\"")
   }
 
   @Test def testDivideOutUnits(): Unit = {

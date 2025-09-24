@@ -16,29 +16,29 @@ class QuadIntTest {
   private val ringEisenstein = new ImagQuadRing(-3)
   private val ringZ2 = new RealQuadRing(2)
   private val ringZPhi = new RealQuadRing(5)
-  private val ringUnsupported = new IllDefQuadRing(1)
 
   @Test def testApply(): Unit = {
     println("apply")
-    var expected: QuadInt = new ImagQuadInt(12, 7, ringGaussian, 1)
-    var actual: QuadInt = QuadInt(12, 7, ringGaussian)
-    assertEquals(expected, actual)
-    expected = new ImagQuadInt(25, 7, ringEisenstein, 2)
-    actual = QuadInt(25, 7, ringEisenstein, 2)
-    assertEquals(expected, actual)
-    expected = new RealQuadInt(15, 4, ringZ2, 1)
-    actual = QuadInt(15, 4, ringZ2)
-    assertEquals(expected, actual)
-    try {
-      actual = QuadInt(10, 10, ringUnsupported)
-      val failMsg = "Trying to create " + actual.toString + " should have caused an exception"
-      fail(failMsg)
-    } catch {
-      case unde: UnsupportedNumberDomainException => println("Trying to use unsupported number domain correctly triggered UnsupportedNumberDomainException")
-        println("\"" + unde.getMessage + "\"")
-      case e: Exception => val failMsg = e.getClass.getName + " is not the right exception for trying to use an unsupported number domain"
-        fail(failMsg)
-    }
+    fail("REWRITE THIS TEST")
+//    var expected: QuadInt = new ImagQuadInt(12, 7, ringGaussian, 1)
+//    var actual: QuadInt = QuadInt(12, 7, ringGaussian)
+//    assertEquals(expected, actual)
+//    expected = new ImagQuadInt(25, 7, ringEisenstein, 2)
+//    actual = QuadInt(25, 7, ringEisenstein, 2)
+//    assertEquals(expected, actual)
+//    expected = new RealQuadInt(15, 4, ringZ2, 1)
+//    actual = QuadInt(15, 4, ringZ2)
+//    assertEquals(expected, actual)
+//    try {
+//      actual = QuadInt(10, 10, ringUnsupported)
+//      val failMsg = "Trying to create " + actual.toString + " should have caused an exception"
+//      fail(failMsg)
+//    } catch {
+//      case unde: UnsupportedNumberDomainException => println("Trying to use unsupported number domain correctly triggered UnsupportedNumberDomainException")
+//        println("\"" + unde.getMessage + "\"")
+//      case e: Exception => val failMsg = e.getClass.getName + " is not the right exception for trying to use an unsupported number domain"
+//        fail(failMsg)
+//    }
   }
 
   @Test def testPlusUnaryAsQuadratic(): Unit = {
