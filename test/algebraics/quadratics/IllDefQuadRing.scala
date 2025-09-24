@@ -1,5 +1,11 @@
 package algebraics.quadratics
 
+/**
+  * Represents ill-defined quadratic rings.
+  * @param d Either the discriminant or four times the discriminant.
+  * @deprecated This class will be removed once {@link IllDefQuadInt} is
+  *             removed.
+  */
 @Deprecated
 class IllDefQuadRing(d: Int) extends QuadRing(d) {
 
