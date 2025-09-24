@@ -368,6 +368,7 @@ class NumberTheoreticFunctionsCalculatorTest {
 
   @Test def testEuclideanGCD(): Unit = {
     println("euclideanGCD")
+    fail("REWRITE THIS TEST")
     assertEquals(1, euclideanGCD(-27, 14))
     assertEquals(3, euclideanGCD(-27, 15))
     assertEquals(9, euclideanGCD(-27, 18))
@@ -378,98 +379,103 @@ class NumberTheoreticFunctionsCalculatorTest {
   }
 
   @Test def testEuclideanGCDAlgDegOverflow(): Unit = {
-    val a = new ImagQuadInt(3, 7, ringEisenstein, 2)
-    val b = new RealQuadInt(5, 8, ringZ2)
-    try {
-      val gcd = euclideanGCD(a, b)
-      val msg =
-        s"Trying to calculate gcd($a, $b) should not have given result $gcd"
-      fail(msg)
-    } catch {
-      case adoe: AlgebraicDegreeOverflowException => println("Trying to calculate gcd(" +
-        a.toString + ", " + b.toString +
-        ") correctly triggered AlgebraicDegreeOverflowException")
-        println("\"" + adoe.getMessage + "\"")
-      case e: Exception => val msg = e.getClass.getName +
-        " is wrong exception to throw for trying to calculate gcd(" +
-        a.toString + ", " + b.toString + ")"
-        fail(msg)
-    }
+    fail("REWRITE THIS TEST")
+//    val a = new ImagQuadInt(3, 7, ringEisenstein, 2)
+//    val b = new RealQuadInt(5, 8, ringZ2)
+//    try {
+//      val gcd = euclideanGCD(a, b)
+//      val msg =
+//        s"Trying to calculate gcd($a, $b) should not have given result $gcd"
+//      fail(msg)
+//    } catch {
+//      case adoe: AlgebraicDegreeOverflowException => println("Trying to calculate gcd(" +
+//        a.toString + ", " + b.toString +
+//        ") correctly triggered AlgebraicDegreeOverflowException")
+//        println("\"" + adoe.getMessage + "\"")
+//      case e: Exception => val msg = e.getClass.getName +
+//        " is wrong exception to throw for trying to calculate gcd(" +
+//        a.toString + ", " + b.toString + ")"
+//        fail(msg)
+//    }
   }
 
   @Test def testEuclideanGCDQuadInt(): Unit = {
-    var a: QuadInt = new ImagQuadInt(3, 1, ringGaussian)
-    var b: QuadInt = new ImagQuadInt(21, -8, ringGaussian)
-    var expected: QuadInt = new ImagQuadInt(2, -1, ringGaussian)
-    var actual = euclideanGCD(a, b)
-    assertEquals(expected, actual)
-    a = new ImagQuadInt(19, -1, ringEisenstein, 2)
-    b = new ImagQuadInt(7, 1, ringEisenstein)
-    expected = new ImagQuadInt(5, -3, ringEisenstein, 2)
-    actual = euclideanGCD(a, b)
-    assertEquals(expected, actual)
-    a = new RealQuadInt(46, 20, ringZ2)
-    b = new RealQuadInt(-21, -3, ringZ2)
-    expected = new RealQuadInt(7, 1, ringZ2)
-    actual = euclideanGCD(a, b)
-    assertEquals(expected, actual)
+    fail("REWRITE THIS TEST")
+//    var a: QuadInt = new ImagQuadInt(3, 1, ringGaussian)
+//    var b: QuadInt = new ImagQuadInt(21, -8, ringGaussian)
+//    var expected: QuadInt = new ImagQuadInt(2, -1, ringGaussian)
+//    var actual = euclideanGCD(a, b)
+//    assertEquals(expected, actual)
+//    a = new ImagQuadInt(19, -1, ringEisenstein, 2)
+//    b = new ImagQuadInt(7, 1, ringEisenstein)
+//    expected = new ImagQuadInt(5, -3, ringEisenstein, 2)
+//    actual = euclideanGCD(a, b)
+//    assertEquals(expected, actual)
+//    a = new RealQuadInt(46, 20, ringZ2)
+//    b = new RealQuadInt(-21, -3, ringZ2)
+//    expected = new RealQuadInt(7, 1, ringZ2)
+//    actual = euclideanGCD(a, b)
+//    assertEquals(expected, actual)
   }
 
   @Test
   def testEuclideanGCDNonEuclOQi19(): Unit = {
-    val ringOQi19 = new ImagQuadRing(-19)
-    val primeFactorOf5 = new ImagQuadInt(1, 1, ringOQi19, 2)
-    val ten = new ImagQuadInt(10, 0, ringOQi19)
-    val actual = euclideanGCD(primeFactorOf5, ten)
-    assertEquals(primeFactorOf5, actual)
-    val primeFactorOf7 = new ImagQuadInt(3, 1, ringOQi19, 2)
-    try {
-      val result = euclideanGCD(ten, primeFactorOf7)
-      val failMsg = "Trying to calculate gcd(" + ten.toString + ", " + primeFactorOf7.toString + ") by the Euclidean algorithm should have caused exception, not given result " + result.toString
-      fail(failMsg)
-    } catch {
-      case nede: NonEuclideanDomainException => println("Trying to calculate gcd(" + ten.toString + ", " + primeFactorOf7.toString + ") by the Euclidean algorithm correctly triggered NonEuclideanDomainException")
-        println("\"" + nede.getMessage + "\"")
-      case e: Exception => val failMsg = e.getClass.getName + " is wrong exception to throw for Trying to calculate gcd(" + ten.toString + ", " + primeFactorOf7.toString + ") by the Euclidean algorithm"
-        fail(failMsg)
-    }
+    fail("REWRITE THIS TEST")
+//    val ringOQi19 = new ImagQuadRing(-19)
+//    val primeFactorOf5 = new ImagQuadInt(1, 1, ringOQi19, 2)
+//    val ten = new ImagQuadInt(10, 0, ringOQi19)
+//    val actual = euclideanGCD(primeFactorOf5, ten)
+//    assertEquals(primeFactorOf5, actual)
+//    val primeFactorOf7 = new ImagQuadInt(3, 1, ringOQi19, 2)
+//    try {
+//      val result = euclideanGCD(ten, primeFactorOf7)
+//      val failMsg = "Trying to calculate gcd(" + ten.toString + ", " + primeFactorOf7.toString + ") by the Euclidean algorithm should have caused exception, not given result " + result.toString
+//      fail(failMsg)
+//    } catch {
+//      case nede: NonEuclideanDomainException => println("Trying to calculate gcd(" + ten.toString + ", " + primeFactorOf7.toString + ") by the Euclidean algorithm correctly triggered NonEuclideanDomainException")
+//        println("\"" + nede.getMessage + "\"")
+//      case e: Exception => val failMsg = e.getClass.getName + " is wrong exception to throw for Trying to calculate gcd(" + ten.toString + ", " + primeFactorOf7.toString + ") by the Euclidean algorithm"
+//        fail(failMsg)
+//    }
   }
 
   @Test
   def testEuclideanGCDNonEuclZ14(): Unit = {
-    val ringZ14 = new RealQuadRing(14)
-    val primeFactorOf13 = new RealQuadInt(1, 1, ringZ14)
-    val two = new RealQuadInt(2, 0, ringZ14)
-    assertTimeoutPreemptively[Unit](Duration.ofSeconds(30), () => {
-      val exc = assertThrows(classOf[NonEuclideanDomainException], () => {
-        val result = euclideanGCD(two, primeFactorOf13)
-        println(s"gcd($two, $primeFactorOf13) said to be $result?")
-      })
-      val excMsg = exc.getMessage
-      assert(excMsg != null, "Message should not be null")
-      println("\"" + excMsg + "\"")
-    })
+    fail("REWRITE THIS TEST")
+//    val ringZ14 = new RealQuadRing(14)
+//    val primeFactorOf13 = new RealQuadInt(1, 1, ringZ14)
+//    val two = new RealQuadInt(2, 0, ringZ14)
+//    assertTimeoutPreemptively[Unit](Duration.ofSeconds(30), () => {
+//      val exc = assertThrows(classOf[NonEuclideanDomainException], () => {
+//        val result = euclideanGCD(two, primeFactorOf13)
+//        println(s"gcd($two, $primeFactorOf13) said to be $result?")
+//      })
+//      val excMsg = exc.getMessage
+//      assert(excMsg != null, "Message should not be null")
+//      println("\"" + excMsg + "\"")
+//    })
   }
 
   // TODO: Break up into two separate tests
   @Test
   def testEuclideanGCDNonEuclOQ69(): Unit = {
-    val ringOQ69 = new RealQuadRing(69)
-    val primeFactorOf23 = new RealQuadInt(23, 3, ringOQ69, 2)
-    val factorOf48 = new RealQuadInt(18, 2, ringOQ69)
-    val result = NumberTheoreticFunctionsCalculator
-      .euclideanGCD(primeFactorOf23, factorOf48,
-        NumberTheoreticFunctionsCalculatorTest.adj23Norm).norm
-    assertEquals(1L, Math.abs(result))
-    assertTimeoutPreemptively[Unit](Duration.ofSeconds(30), () => {
-      val exc = assertThrows(classOf[NonEuclideanDomainException], () => {
-        val unexpectedResult = euclideanGCD(primeFactorOf23, factorOf48)
-        println(s"gcd($primeFactorOf23, $factorOf48) said to be $unexpectedResult?")
-      })
-      val excMsg = exc.getMessage
-      assert(excMsg != null, "Message should not be null")
-      println("\"" + excMsg + "\"")
-    })
+    fail("REWRITE THIS TEST")
+//    val ringOQ69 = new RealQuadRing(69)
+//    val primeFactorOf23 = new RealQuadInt(23, 3, ringOQ69, 2)
+//    val factorOf48 = new RealQuadInt(18, 2, ringOQ69)
+//    val result = NumberTheoreticFunctionsCalculator
+//      .euclideanGCD(primeFactorOf23, factorOf48,
+//        NumberTheoreticFunctionsCalculatorTest.adj23Norm).norm
+//    assertEquals(1L, Math.abs(result))
+//    assertTimeoutPreemptively[Unit](Duration.ofSeconds(30), () => {
+//      val exc = assertThrows(classOf[NonEuclideanDomainException], () => {
+//        val unexpectedResult = euclideanGCD(primeFactorOf23, factorOf48)
+//        println(s"gcd($primeFactorOf23, $factorOf48) said to be $unexpectedResult?")
+//      })
+//      val excMsg = exc.getMessage
+//      assert(excMsg != null, "Message should not be null")
+//      println("\"" + excMsg + "\"")
+//    })
   }
 
   @Test def testFundamentalUnit(): Unit = {
@@ -484,6 +490,7 @@ class NumberTheoreticFunctionsCalculatorTest {
 
   @Test def testPlaceInPrimarySectorImagQuadInt(): Unit = {
     println("placeInPrimarySector")
+    fail("REWRITE THIS TEST")
     var num = new ImagQuadInt(-1, 6, ringGaussian)
     var expected = new ImagQuadInt(6, 1, ringGaussian)
     var actual = placeInPrimarySector(num)
@@ -518,6 +525,7 @@ class NumberTheoreticFunctionsCalculatorTest {
 
   @Test def testDivideOutUnits(): Unit = {
     println("divideOutUnits")
+    fail("REWRITE THIS TEST")
     val ring = new RealQuadRing(10)
     val expected = new RealQuadInt(1, 2, ring)
     val unitsMultipliedIn = new RealQuadInt(5281, 1670, ring)
