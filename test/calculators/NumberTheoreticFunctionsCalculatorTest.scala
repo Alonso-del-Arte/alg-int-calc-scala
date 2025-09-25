@@ -372,6 +372,14 @@ class NumberTheoreticFunctionsCalculatorTest {
     assertEquals(expected, actual, msg)
   }
 
+  @Test def testEuclideanGCDSameNegative(): Unit = {
+    val a = Random.nextInt() | Int.MinValue
+    val expected = Math.abs(a)
+    val actual = euclideanGCD(a, a)
+    val msg = s"Reckoning gcd($a, $a)"
+    assertEquals(expected, actual, msg)
+  }
+
   //  private def invalidFunctionF(n: Int): Int = 10
 @org.junit.jupiter.api.Disabled
   @Test def testEuclideanGCD(): Unit = {
