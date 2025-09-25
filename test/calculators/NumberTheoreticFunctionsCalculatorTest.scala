@@ -369,10 +369,10 @@ class NumberTheoreticFunctionsCalculatorTest {
     val expected = Random.nextInt(Int.MaxValue) + 1
     val actual = euclideanGCD(expected, expected)
     val msg = s"Reckoning gcd($expected, $expected)"
-    assertEquals(expected, actual)
+    assertEquals(expected, actual, msg)
   }
 
-//  private def invalidFunctionF(n: Int): Int = 10
+  //  private def invalidFunctionF(n: Int): Int = 10
 @org.junit.jupiter.api.Disabled
   @Test def testEuclideanGCD(): Unit = {
     println("euclideanGCD")
