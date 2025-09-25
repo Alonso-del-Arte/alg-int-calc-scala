@@ -12,6 +12,8 @@ import java.time.Duration
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions._
 
+import scala.util.Random
+
 object NumberTheoreticFunctionsCalculatorTest {
 
   def adj23Norm(num: AlgInt): Long = {
@@ -362,6 +364,13 @@ class NumberTheoreticFunctionsCalculatorTest {
   }
 
 //  private def negCube(n: Int): Int = n * n * -n
+
+  @Test def testEuclideanGCDSamePositive(): Unit = {
+    val expected = Random.nextInt(Int.MaxValue) + 1
+    val actual = euclideanGCD(expected, expected)
+    val msg = s"Reckoning gcd($expected, $expected)"
+    assertEquals(expected, actual)
+  }
 
 //  private def invalidFunctionF(n: Int): Int = 10
 @org.junit.jupiter.api.Disabled
