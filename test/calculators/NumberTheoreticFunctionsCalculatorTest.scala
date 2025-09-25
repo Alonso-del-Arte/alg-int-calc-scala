@@ -364,7 +364,7 @@ class NumberTheoreticFunctionsCalculatorTest {
 //  private def negCube(n: Int): Int = n * n * -n
 
 //  private def invalidFunctionF(n: Int): Int = 10
-
+@org.junit.jupiter.api.Disabled
   @Test def testEuclideanGCD(): Unit = {
     println("euclideanGCD")
     fail("REWRITE THIS TEST")
@@ -376,7 +376,7 @@ class NumberTheoreticFunctionsCalculatorTest {
     assertEquals(27, euclideanGCD(-27, 0))
     assertEquals(28, euclideanGCD(8400, 8372))
   }
-
+  @org.junit.jupiter.api.Disabled
   @Test def testEuclideanGCDAlgDegOverflow(): Unit = {
     fail("REWRITE THIS TEST")
 //    val a = new ImagQuadInt(3, 7, ringEisenstein, 2)
@@ -397,7 +397,7 @@ class NumberTheoreticFunctionsCalculatorTest {
 //        fail(msg)
 //    }
   }
-
+  @org.junit.jupiter.api.Disabled
   @Test def testEuclideanGCDQuadInt(): Unit = {
     fail("REWRITE THIS TEST")
 //    var a: QuadInt = new ImagQuadInt(3, 1, ringGaussian)
@@ -416,7 +416,7 @@ class NumberTheoreticFunctionsCalculatorTest {
 //    actual = euclideanGCD(a, b)
 //    assertEquals(expected, actual)
   }
-
+  @org.junit.jupiter.api.Disabled
   @Test
   def testEuclideanGCDNonEuclOQi19(): Unit = {
     fail("REWRITE THIS TEST")
@@ -437,7 +437,7 @@ class NumberTheoreticFunctionsCalculatorTest {
 //        fail(failMsg)
 //    }
   }
-
+@org.junit.jupiter.api.Disabled
   @Test
   def testEuclideanGCDNonEuclZ14(): Unit = {
     fail("REWRITE THIS TEST")
@@ -456,7 +456,7 @@ class NumberTheoreticFunctionsCalculatorTest {
   }
 
   // TODO: Break up into two separate tests
-  @Test
+  @org.junit.jupiter.api.Disabled  @Test
   def testEuclideanGCDNonEuclOQ69(): Unit = {
     fail("REWRITE THIS TEST")
 //    val ringOQ69 = new RealQuadRing(69)
@@ -486,7 +486,7 @@ class NumberTheoreticFunctionsCalculatorTest {
     actual = fundamentalUnit(ringZPhi)
     assertEquals(expected, actual)
   }
-
+  @org.junit.jupiter.api.Disabled
   @Test def testPlaceInPrimarySectorImagQuadInt(): Unit = {
     println("placeInPrimarySector")
     fail("REWRITE THIS TEST")
@@ -506,7 +506,7 @@ class NumberTheoreticFunctionsCalculatorTest {
     val actual = placeInPrimarySector(num)
     assertEquals(expected, actual)
   }
-
+  @org.junit.jupiter.api.Disabled
   @Test def testPlaceInPrimarySectorUnsupportedRing(): Unit = {
     fail("REWRITE THIS TEST")
 //    val num = new IllDefQuadInt(-8, 3, ringUnsupported)
@@ -522,7 +522,7 @@ class NumberTheoreticFunctionsCalculatorTest {
 //    assert(excMsg != null, "Message should not be null")
 //    println("\"" + excMsg + "\"")
   }
-
+  @org.junit.jupiter.api.Disabled
   @Test def testDivideOutUnits(): Unit = {
     println("divideOutUnits")
     fail("REWRITE THIS TEST")
