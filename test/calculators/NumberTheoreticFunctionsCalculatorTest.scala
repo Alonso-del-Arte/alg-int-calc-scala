@@ -16,6 +16,17 @@ import scala.util.Random
 
 object NumberTheoreticFunctionsCalculatorTest {
 
+  private var normCallCount = 0
+
+  def makeNormFunction: Int => Int = {
+    val m = Random.nextInt(10) + 1
+    println(s"Chose $m for m")
+    n: Int => {
+      this.normCallCount += 1
+      Math.abs(m * n)
+    }
+  }
+
   def adj23Norm(num: AlgInt): Long = {
     var interim = Math.abs(num.norm)
     while (euclideanGCD(interim, 23L) > 1
