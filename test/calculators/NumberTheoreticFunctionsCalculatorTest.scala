@@ -18,10 +18,10 @@ object NumberTheoreticFunctionsCalculatorTest {
 
   private var normCallCount = 0
 
-  def makeNormFunction: Int => Int = {
+  def makeNormFunction: Long => Long = {
     val m = Random.nextInt(10) + 1
     println(s"Chose $m for m")
-    n: Int => {
+    n: Long => {
       this.normCallCount += 1
       Math.abs(m * n)
     }
