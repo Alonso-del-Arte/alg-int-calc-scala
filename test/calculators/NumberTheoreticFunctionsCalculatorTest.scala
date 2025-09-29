@@ -376,6 +376,18 @@ class NumberTheoreticFunctionsCalculatorTest {
 
 //  private def negCube(n: Int): Int = n * n * -n
 
+  @Test def testEuclideanGCDUsesPassedInFunction(): Unit = {
+    val a = Random.nextInt()
+    val b = Random.nextInt()
+    val fn = NumberTheoreticFunctionsCalculatorTest.makeNormFunction
+    val baseline = NumberTheoreticFunctionsCalculatorTest.normCallCount
+    val result = NumberTheoreticFunctionsCalculator.euclideanGCD(a, b, fn)
+    val msg = s"Getting gcd($a, $b) = $result should've called ${fn.toString()}"
+    val callCount = NumberTheoreticFunctionsCalculatorTest.normCallCount -
+      baseline
+    assert(callCount > 0, msg)
+  }
+
   @Test def testEuclideanGCDSamePositive(): Unit = {
     val expected = Random.nextInt(Int.MaxValue) + 1
     val actual = euclideanGCD(expected, expected)
