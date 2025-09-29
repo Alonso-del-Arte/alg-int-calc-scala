@@ -148,7 +148,7 @@ object NumberTheoreticFunctionsCalculator {
   // TODO: Rewrite tests
   def euclideanGCD(a: Long, b: Long,
                    norm: Long => Long = Math.abs): Long = {
-//    val phi = norm(b)
+    val phi = norm(b)
     Math.abs(a)
   }
   /* match {
